@@ -1,0 +1,60 @@
+{
+  "name": "sanity-plugin-asset-source-ogimage",
+  "version": "0.1.0",
+  "description": "Allow editors to generate social sharing images on the fly inside of Sanity.",
+  "main": "index.js",
+  "keywords": [
+    "sanity",
+    "plugin",
+    "assets",
+    "source",
+    "images",
+    "og:image"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kaordica/sanity-plugin-asset-source-ogimage"
+  },
+  "bugs": {
+    "url": "https://github.com/kaordica/sanity-plugin-asset-source-ogimage/issues"
+  },
+  "homepage": "https://github.com/kaordica/sanity-plugin-asset-source-ogimage#readme",
+  "author": {
+    "email": "henrique@kaordica.design",
+    "name": "Henrique Cavalieri",
+    "url": "https://kaordica.design"
+  },
+  "license": "Apache-2.0",
+  "licenses": [
+    {
+      "type": "Apache-2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0"
+    }
+  ],
+  "files": [
+    "lib",
+    "sanity.json",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "babel src -d lib --copy-files",
+    "dev": "npm run build && nodemon --watch src --exec npm run build",
+    "prepublish": "npm run build"
+  },
+  "peerDependencies": {
+    "@sanity/base": ">= 0.140.0",
+    "@sanity/components": ">= 0.140.0",
+    "react": ">= 16.8",
+    "react-dom": ">= 16.8"
+  },
+  "dependencies": {
+    "html-to-image": "^0.1.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.7.4",
+    "@babel/core": "^7.7.4",
+    "@babel/preset-env": "^7.7.4",
+    "@babel/preset-react": "^7.7.4",
+    "nodemon": "^2.0.1"
+  }
+}

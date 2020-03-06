@@ -1,0 +1,115 @@
+@import 'part:@sanity/base/theme/variables/brand-colors-style';
+@import 'part:@sanity/base/theme/variables/globals-style';
+@import 'part:@sanity/base/theme/variables/override-style';
+
+:root {
+  --og-border-thickness: 1;
+  --og-border-width: calc(var(--og-border-thickness) * 1em) 0;
+  --og-font-size-value: 15;
+  --og-font-size: calc(var(--og-font-size-value) * 1px);
+  --og-logo-width: 15%;
+  --og-logo-max-height: 8em;
+  --og-container-padding: 2em calc(var(--og-logo-width) + 1em) 2em 4em;
+  --og-title-weight: 900;
+  --og-description-weight: 400;
+  --og-height-without-border: calc(
+    628 - calc(var(--og-font-size-value) * var(--og-border-thickness) * 2)
+  );
+}
+
+.wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.wrapper p {
+  text-align: center;
+  font-size: 1.25em;
+}
+
+.main {
+  /* To keep the 1200x628px proportion, we must also consider the border's thickness when doing the padding trick */
+  padding-bottom: calc(calc(var(--og-height-without-border) / 1200) * 100%);
+  overflow: hidden;
+  position: relative;
+  font-family: inherit;
+  font-size: var(--og-font-size);
+  border: 0 solid var(--brand-primary);
+  border-width: var(--og-border-width);
+  background: var(--component-bg);
+  box-sizing: border-box;
+}
+
+.main * {
+  box-sizing: inherit;
+}
+
+.container {
+  position: absolute;
+  width: 100%;
+  padding: var(--og-container-padding);
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  color: inherit;
+  z-index: 3;
+}
+
+.logo {
+  width: var(--og-logo-width);
+  position: absolute;
+  right: 1.5em;
+  bottom: 1.5em;
+}
+
+.logo svg {
+  width: 100%;
+  display: block;
+  max-height: var(--og-logo-max-height);
+}
+
+.textareaWrapper {
+  position: relative;
+}
+
+.title,
+.description {
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  display: block;
+  color: inherit;
+  width: 100%;
+  padding: 0;
+  resize: none;
+  overflow: hidden;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  line-height: 1.2;
+  font-size: inherit;
+}
+
+textarea.title,
+textarea.description {
+  position: absolute;
+  height: 100%;
+  left: 0;
+  top: 0;
+  z-index: 1;
+}
+
+.description {
+  font-weight: var(--og-description-weight);
+  opacity: 0.85;
+}
+
+.title {
+  font-weight: var(--og-title-weight);
+  line-height: 1.1;
+}
+
+.hiddenSpacer {
+  opacity: 0;
+  /* Avoid hiding the very bottom of textareas' */
+  padding-bottom: 0.25em;
+}
