@@ -1,6 +1,6 @@
 import React from 'react'
 import Button from 'part:@sanity/components/buttons/default'
-import Logo from 'part:@sanity/base/brand-logo'
+import Logo from 'part:@sanity/base/brand-logo?'
 
 import { saveIcon } from './icons'
 
@@ -27,7 +27,7 @@ export const EditorFooter = ({ isSaving = false, printImage }) => (
   </>
 )
 
-export const EditorLogo = () => (
+export const EditorLogo = () => Logo && (
   <div className={styles.logo}>
     <Logo />
   </div>
