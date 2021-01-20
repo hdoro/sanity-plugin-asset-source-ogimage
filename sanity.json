@@ -5,9 +5,13 @@
   },
   "parts": [
     {
+      "name": "part:sanity-plugin-asset-source-generate-ogimage/image-asset-source",
       "implements": "part:@sanity/form-builder/input/image/asset-source",
-      "path": "index.js",
-      "name": "part:sanity-plugin-asset-source-generate-ogimage/image-asset-source"
+      "path": "index.js"
+    },
+    {
+      "implements": "part:@sanity/base/tool",
+      "path": "index.js"
     }
   ]
 }

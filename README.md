@@ -42,59 +42,17 @@ This is going to get you a barebones starter, which you can customize by followi
 
 ## Customizing
 
-We highly encourage you to customize the image editor to fit your needs and brand. To do so, instead of importing the default export like shown above, you can import the parts you want and overwrite them:
-
-```js
-import DefaultSource from 'part:@sanity/form-builder/input/image/asset-source-default';
-import {
-  EditorComponent, // the actual React component
-  PLUGIN_META, // some basic info to make the plugin work
-  DEFAULT_PROPS // documented below
-} from 'sanity-plugin-asset-source-ogimage';
-
-// And don't forget import React for customizing the component
-import React from 'react'
-
-// then in the schema
-{
-  name: 'ogImage',
-  title: 'Social sharing image',
-  type: 'image',
-  options: {
-    sources: [DefaultSource, {
-      ...PLUGIN_META,
-      // customize the title, name and icon as you see fit
-      title: 'New sharing image',
-      // and overwrite the component
-      component: sanityProps => (
-        <EditorComponent sanityProps={sanityProps} {...DEFAULT_PROPS} dialogTitle="New sharing image" />
-      )
-    }],
-  },
-}
-// ...
-
-/*
-
-DEFAULT_PROPS shape:
-- footer: React component
-  * The default includes the "Create and save" button
-- dialogTitle: string
-  * The title that shows in the image creation dialog
-- logo: React component
-  * Used to brand your OG image
-  * Defaults to the current studio's logo
-- select:
-  - title: string (ex: meta.title)
-    * the key of the field to use as the initial title
-    * references the current page's schema
-  - description: string
-    * the key of the field to use as the initial description
-    * references the current page's schema
-*/
-```
-
-I haven't had the time and energy to break the image template component into several chunks or to create idiomatic CSS classes to allow for powerful layout customization, but feel free to look into the source code and do so. Oh, and PRs are always welcome!
+- Whatever data you want
+- Array of layouts
+- Each layout is an object with:
+  - a react component for displaying the final thing
+  - a prepare function which returns data to be used by the component
+- Prepare function gets the current document and returns an object with data for the layout
+- We'll provide a very simple default layout which receives a logo and title prop
+- From data types, we'll provide a simple UI for editors to overwrite the data coming from the document
+  - As a starter, I'd probably go with just booleans, text and number. Later we can expand that.
+  - If a format isn't supported, such as an object or image, then we'd point editors to the document ("Close this dialog to edit this")
+- bonus: upon uploading, create a `media.tag` document with `name = "og image"` and add it to the uploaded asset to group it in the upcoming media plugin v2
 
 ## Ideas and possible future features
 
