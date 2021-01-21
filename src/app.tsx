@@ -65,6 +65,7 @@ const MediaEditor = (props: Props) => {
     document,
     layouts,
     onSelect: props.onSelect,
+    onClose: props.onClose,
     dialog: props.dialog,
   }
 

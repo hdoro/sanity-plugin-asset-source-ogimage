@@ -11,8 +11,18 @@ export interface SanityImage {
 }
 
 export interface DialogLabels {
+  /**
+   * Shows above the form
+   */
   title?: string
+  /**
+   * For the image generation button
+   */
   finishCta?: string
+  /**
+   * The a11y title for the close button in the dialog
+   */
+  ariaClose?: string
 }
 
 export interface LayoutData {

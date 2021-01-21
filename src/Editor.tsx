@@ -8,10 +8,11 @@ import {
   Stack,
   Text,
 } from '@sanity/ui'
-import { CogIcon } from '@sanity/icons'
+import { CloseIcon, CogIcon } from '@sanity/icons'
 import { DialogLabels, EditorLayout, LayoutData, SanityDocument } from '@types'
 import * as React from 'react'
 import download from 'downloadjs'
+import styled from 'styled-components'
 import { toPng } from 'html-to-image'
 
 import defaultLayout from './defaultLayout'
@@ -19,7 +20,8 @@ import EditorField from './EditorField'
 
 interface EditorProps {
   layouts: EditorLayout[]
-  onSelect?: () => void
+  onSelect?: (...props: any) => void
+  onClose?: () => void
   dialog?: DialogLabels
   document: SanityDocument
 }
@@ -28,6 +30,27 @@ const DEFAULT_DIMENSIONS = {
   width: 1200,
   height: 630,
 }
+
+// Where we should start/finish wrapping Wrapper
+const BREAKPOINT = 1100
+
+const Root = styled(Box)`
+  @media (min-width: ${BREAKPOINT}px) {
+    &:not([hidden]) {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+`
+
+const Wrapper = styled(Flex)`
+  @media (max-width: ${BREAKPOINT - 1}px) {
+    &:not([hidden]) {
+      flex-wrap: wrap;
+    }
+  }
+`
 
 const Editor: React.FC<EditorProps> = (props) => {
   const captureRef = React.useRef<HTMLDivElement>()
@@ -52,89 +75,130 @@ const Editor: React.FC<EditorProps> = (props) => {
       return
     }
     try {
-      const img = await toPng(captureRef.current, {
+      const imgBase64 = await toPng(captureRef.current, {
         quality: 1,
         pixelRatio: 1,
       })
-      download(img, 'test.png')
+      if (props.onSelect) {
+        props.onSelect([
+          {
+            kind: 'base64',
+            value: imgBase64,
+            assetDocumentProps: {
+              originalFilename: `OG Image - ${
+                activeLayout.title || activeLayout.name
+              } - ${new Date(Date.now()).toISOString()}`,
+              source: {
+                name: 'asset-source-ogimage',
+                id: 'asset-source-ogimage',
+              },
+            },
+          },
+        ])
+      } else {
+        download(imgBase64, 'test.png')
+      }
     } catch (error) {
       console.error(error)
     }
   }
-  console.log({ data })
 
   return (
-    <Card
-      scheme="light"
-      style={{
-        height: '100%',
-        minHeight: '100%',
-      }}
-      padding={3}
-    >
-      <Flex>
-        <Box padding={3}>
-          <Stack space={4}>
-            <Text size={4}>{props.dialog?.title || 'Generate image'}</Text>
-            {activeLayout.fields.map((field) => (
-              <EditorField
-                field={field}
-                updateData={(newData) => setData(newData)}
-                data={data}
-              />
-            ))}
+    <Card scheme="light" height="fill" sizing="border">
+      <Card
+        tone="default"
+        padding={4}
+        marginBottom={[4, 0]}
+        borderBottom={true}
+        style={{ textAlign: 'right' }}
+      >
+        <Flex justify="space-between" align="center">
+          <Text size={3} weight="semibold">
+            {props.dialog?.title || 'Generate image'}
+          </Text>
 
+          {/* If onClose is defined, we're in an assetSource, where we should provide a header with a close button */}
+          {props.onClose && (
             <Button
-              // fontSize={[2, 2, 3]}
-              // padding={[3, 3, 4]}
-              icon={CogIcon}
-              tone="primary"
-              text="Create"
-              onClick={generateImage}
-            />
-          </Stack>
-        </Box>
-        <Container
-          width={width}
-          style={{
-            overflow: 'auto',
-            maxHeight: 'calc(100% - 60px)',
-          }}
-        >
-          {props.layouts?.length > 1 && (
-            <Stack space={3}>
-              <Box>
-                <Text>Choose layout</Text>
-              </Box>
-              <Inline space={[3, 3, 4]}>
-                {props.layouts.map((layout, i) => (
-                  <Button
-                    key={layout.name || layout.title || `${i}-layout`}
-                    mode={
-                      activeLayout.name === layout.name ? 'default' : 'ghost'
-                    }
-                    tone={
-                      activeLayout.name === layout.name ? 'positive' : 'default'
-                    }
-                    text={layout.title || layout.name}
-                    onClick={() => setActiveLayout(layout)}
-                  />
-                ))}
-              </Inline>
-            </Stack>
+              onClick={props.onClose}
+              icon={CloseIcon}
+              mode="bleed"
+              tone="critical"
+              title={props.dialog?.ariaClose || 'close'}
+            ></Button>
           )}
-          <div
+        </Flex>
+      </Card>
+      <Root height="fill" overflow="auto">
+        <Wrapper justify="center">
+          <Box padding={3}>
+            <Stack space={4}>
+              {activeLayout.fields.map((field) => (
+                <EditorField
+                  field={field}
+                  updateData={(newData) => setData(newData)}
+                  data={data}
+                />
+              ))}
+
+              <Button
+                // fontSize={[2, 2, 3]}
+                // padding={[3, 3, 4]}
+                icon={CogIcon}
+                tone="primary"
+                text={props.dialog?.finishCta || 'Create'}
+                onClick={generateImage}
+              />
+            </Stack>
+          </Box>
+          <Box
+            height="fill"
+            overflow="auto"
             style={{
-              width: `${width}px`,
-              height: `${height}px`,
-              boxSizing: 'border-box',
+              maxWidth: `${width}px`,
             }}
-            ref={captureRef}
           >
-            <LayoutComponent {...data} />
-          </div>
-        </Container>
-      </Flex>
+            <Stack space={3}>
+              {props.layouts?.length > 1 && (
+                <>
+                  <Box>
+                    <Text>Choose layout</Text>
+                  </Box>
+                  <Inline space={[3, 3, 4]}>
+                    {props.layouts.map((layout, i) => (
+                      <Button
+                        key={layout.name || layout.title || `${i}-layout`}
+                        mode={
+                          activeLayout.name === layout.name
+                            ? 'default'
+                            : 'ghost'
+                        }
+                        tone={
+                          activeLayout.name === layout.name
+                            ? 'positive'
+                            : 'default'
+                        }
+                        text={layout.title || layout.name}
+                        onClick={() => setActiveLayout(layout)}
+                      />
+                    ))}
+                  </Inline>
+                </>
+              )}
+              <div
+                style={{
+                  width: `${width}px`,
+                  height: `${height}px`,
+                  boxSizing: 'border-box',
+                }}
+                ref={captureRef}
+              >
+                <LayoutComponent {...data} />
+              </div>
+            </Stack>
+          </Box>
+        </Wrapper>
+      </Root>
     </Card>
   )
 }
