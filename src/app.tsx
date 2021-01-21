@@ -20,8 +20,17 @@ type Props = {
   layouts?: EditorLayout[]
   dialog?: DialogLabels
   // The props below are provided by Sanity
+  /**
+   * Exclusive to asset source dialogs.
+   */
   onClose?: () => void
+  /**
+   * Exclusive to asset source dialogs.
+   */
   onSelect?: () => void
+  /**
+   * Exclusive to studio tools.
+   */
   tool?: string
   document?: SanityDocument
   selectedAssets?: SelectedAsset[]

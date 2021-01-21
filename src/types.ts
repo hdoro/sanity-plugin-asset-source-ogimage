@@ -48,9 +48,14 @@ export interface LayoutField {
   unsupportedError?: string
 }
 
-export interface EditorLayout {
-  component: React.Component | React.FC
-  prepare: PrepareFunction
+export type EditorLayout<Data = LayoutData> = {
+  /**
+   * Needs to be unique
+   */
+  name: string
+  title?: string
+  component: React.Component<Data> | React.FC<Data>
+  prepare: PrepareFunction<Data>
   fields: LayoutField[]
   dimensions?: {
     width: number

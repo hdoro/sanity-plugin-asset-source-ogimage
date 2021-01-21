@@ -1,10 +1,12 @@
+import React from 'react'
 import { ImageIcon } from '@sanity/icons'
 
 import ImageEditor from './app'
+import TestInstance from './testLayouts/TestInstance'
 
 export default {
   name: 'asset-source-ogimage',
   title: 'Generate image',
-  component: ImageEditor,
-  icon: ImageIcon
+  component: TestInstance,
+  icon: ImageIcon,
 }

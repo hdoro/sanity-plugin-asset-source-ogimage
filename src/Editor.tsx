@@ -1,4 +1,13 @@
-import { Box, Button, Card, Container, Flex, Stack, Text } from '@sanity/ui'
+import {
+  Box,
+  Button,
+  Card,
+  Container,
+  Flex,
+  Inline,
+  Stack,
+  Text,
+} from '@sanity/ui'
 import { CogIcon } from '@sanity/icons'
 import { DialogLabels, EditorLayout, LayoutData, SanityDocument } from '@types'
 import * as React from 'react'
@@ -22,20 +31,20 @@ const DEFAULT_DIMENSIONS = {
 
 const Editor: React.FC<EditorProps> = (props) => {
   const captureRef = React.useRef<HTMLDivElement>()
-  const [layout] = React.useState<EditorLayout>(
+  const [activeLayout, setActiveLayout] = React.useState<EditorLayout>(
     props.layouts[0] || defaultLayout,
   )
   const [data, setData] = React.useState<LayoutData>(
-    layout.prepare(props.document),
+    activeLayout.prepare(props.document),
   )
-  const LayoutComponent = layout.component as any
+  const LayoutComponent = activeLayout.component as any
 
   React.useEffect(() => {
-    setData(layout.prepare(props.document))
-  }, [layout])
+    setData(activeLayout.prepare(props.document))
+  }, [activeLayout])
 
-  const width = layout.dimensions?.width || DEFAULT_DIMENSIONS.width
-  const height = layout.dimensions?.height || DEFAULT_DIMENSIONS.height
+  const width = activeLayout.dimensions?.width || DEFAULT_DIMENSIONS.width
+  const height = activeLayout.dimensions?.height || DEFAULT_DIMENSIONS.height
 
   async function generateImage(e: React.FormEvent) {
     e.preventDefault()
@@ -67,7 +76,7 @@ const Editor: React.FC<EditorProps> = (props) => {
         <Box padding={3}>
           <Stack space={4}>
             <Text size={4}>{props.dialog?.title || 'Generate image'}</Text>
-            {layout.fields.map((field) => (
+            {activeLayout.fields.map((field) => (
               <EditorField
                 field={field}
                 updateData={(newData) => setData(newData)}
@@ -92,6 +101,28 @@ const Editor: React.FC<EditorProps> = (props) => {
             maxHeight: 'calc(100% - 60px)',
           }}
         >
+          {props.layouts?.length > 1 && (
+            <Stack space={3}>
+              <Box>
+                <Text>Choose layout</Text>
+              </Box>
+              <Inline space={[3, 3, 4]}>
+                {props.layouts.map((layout, i) => (
+                  <Button
+                    key={layout.name || layout.title || `${i}-layout`}
+                    mode={
+                      activeLayout.name === layout.name ? 'default' : 'ghost'
+                    }
+                    tone={
+                      activeLayout.name === layout.name ? 'positive' : 'default'
+                    }
+                    text={layout.title || layout.name}
+                    onClick={() => setActiveLayout(layout)}
+                  />
+                ))}
+              </Inline>
+            </Stack>
+          )}
           <div
             style={{
               width: `${width}px`,
