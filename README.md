@@ -59,7 +59,9 @@ This is going to get you a barebones starter, which you can customize by followi
 - Let editors know when the image is bigger than their screens and ask them to zoom-out
 - One-column layout until screen is bigger than desired layout width
 - Improve the dialog layout
-- Image input
+- Image and array inputs (probably using @sanity/core/form-builder)
+- Dealing with references like previews
+- Debug Switch component
 - Find a way to deal with custom fonts.
   - Right now, the saving process will take several seconds if using a web font that isn't saved locally.
   - This is triggered by `html-to-image` running 800+ requests to download the font, which slows down the whole window and makes waiting for it quite painful

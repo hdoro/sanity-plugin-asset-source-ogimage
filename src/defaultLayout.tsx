@@ -1,16 +1,40 @@
-import { Card, Container, Text } from '@sanity/ui'
+import { Card, Container, Stack, Text } from '@sanity/ui'
 import { EditorLayout, PrepareFunction, SanityImage } from '@types'
 import * as React from 'react'
+import styled from 'styled-components'
+
 import Image from './Image'
 
 interface DefaultLayoutProps {
   title?: string
   logo?: SanityImage
+  subtitle?: string
+  includeBorder: boolean
 }
 
+const Title = styled.h1`
+  font-size: 58px;
+  font-weight: 600;
+  margin: 0;
+`
+
+const SubTitle = styled.h2`
+  font-size: 30px;
+  font-weight: 400;
+  margin: 0;
+`
+
+const LogoWrapper = styled.div`
+  position: absolute;
+  right: 1em;
+  bottom: 1em;
+`
+
 export const DefaultComponent: React.FC<DefaultLayoutProps> = ({
-  title = 'Title missing',
+  title,
   logo,
+  subtitle,
+  includeBorder,
 }) => {
   return (
     <Card
@@ -20,14 +44,22 @@ export const DefaultComponent: React.FC<DefaultLayoutProps> = ({
         height: '100%',
         display: 'flex',
         alignItems: 'center',
-        border: '5px solid red',
+        justifyContent: 'center',
+        border: includeBorder ? '5px solid var(--card-border-color)' : 'none',
         boxSizing: 'border-box',
+        textAlign: 'center',
+        position: 'relative',
       }}
       padding={3}
     >
       <Container>
-        <Text size={3}>{title}</Text>
-        <Image image={logo} width={500} />
+        <Stack space={3}>
+          {title && <Title>{title}</Title>}
+          {subtitle && <SubTitle>{subtitle}</SubTitle>}
+          <LogoWrapper>
+            <Image image={logo} width={100} />
+          </LogoWrapper>
+        </Stack>
       </Container>
     </Card>
   )
@@ -48,10 +80,13 @@ export const defaultPrepare: PrepareFunction<DefaultLayoutProps> = (
       document.image ||
       document.hero?.image ||
       document.logo,
+    includeBorder: false,
   }
 }
 
-const defaultLayout: EditorLayout = {
+const defaultLayout: EditorLayout<DefaultLayoutProps> = {
+  name: 'default',
+  title: 'Default layout',
   component: DefaultComponent,
   prepare: defaultPrepare,
   fields: [
@@ -61,9 +96,19 @@ const defaultLayout: EditorLayout = {
       type: 'string',
     },
     {
+      title: 'Subtitle',
+      name: 'subtitle',
+      type: 'text',
+    },
+    {
       title: 'Logo / image',
       name: 'logo',
       type: 'image',
+    },
+    {
+      title: 'Include borders',
+      name: 'includeBorder',
+      type: 'boolean',
     },
   ],
 }

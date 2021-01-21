@@ -2,9 +2,9 @@ import {
   Box,
   Button,
   Card,
-  Container,
   Flex,
   Inline,
+  Spinner,
   Stack,
   Text,
 } from '@sanity/ui'
@@ -53,7 +53,13 @@ const Wrapper = styled(Flex)`
 `
 
 const Editor: React.FC<EditorProps> = (props) => {
+  const [status, setStatus] = React.useState<
+    'idle' | 'error' | 'loading' | 'success'
+  >('idle')
+  const disabled = status === 'loading'
+
   const captureRef = React.useRef<HTMLDivElement>()
+
   const [activeLayout, setActiveLayout] = React.useState<EditorLayout>(
     props.layouts[0] || defaultLayout,
   )
@@ -75,10 +81,12 @@ const Editor: React.FC<EditorProps> = (props) => {
       return
     }
     try {
+      setStatus('loading')
       const imgBase64 = await toPng(captureRef.current, {
         quality: 1,
         pixelRatio: 1,
       })
+      setStatus('success')
       if (props.onSelect) {
         props.onSelect([
           {
@@ -99,6 +107,7 @@ const Editor: React.FC<EditorProps> = (props) => {
         download(imgBase64, 'test.png')
       }
     } catch (error) {
+      setStatus('error')
       console.error(error)
     }
   }
@@ -138,16 +147,18 @@ const Editor: React.FC<EditorProps> = (props) => {
                   field={field}
                   updateData={(newData) => setData(newData)}
                   data={data}
+                  disabled={disabled}
                 />
               ))}
 
               <Button
                 // fontSize={[2, 2, 3]}
                 // padding={[3, 3, 4]}
-                icon={CogIcon}
+                icon={disabled ? Spinner : CogIcon}
                 tone="primary"
                 text={props.dialog?.finishCta || 'Create'}
                 onClick={generateImage}
+                disabled={disabled}
               />
             </Stack>
           </Box>
@@ -180,6 +191,7 @@ const Editor: React.FC<EditorProps> = (props) => {
                         }
                         text={layout.title || layout.name}
                         onClick={() => setActiveLayout(layout)}
+                        disabled={disabled}
                       />
                     ))}
                   </Inline>

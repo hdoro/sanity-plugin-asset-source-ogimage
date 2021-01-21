@@ -59,7 +59,6 @@ const MediaEditor = (props: Props) => {
     return null
   }
   const document: SanityDocument = props.document || { _id: 'unknown' }
-  console.log({ props, layouts })
 
   const editorProps = {
     document,

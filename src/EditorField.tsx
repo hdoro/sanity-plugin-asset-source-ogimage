@@ -1,18 +1,20 @@
 import React from 'react'
 import FormField from 'part:@sanity/components/formfields/default'
 import { LayoutData, LayoutField } from '@types'
-import { Box, Card, Stack, Switch, Text, TextArea, TextInput } from '@sanity/ui'
+import { Box, Stack, Switch, Text, TextArea, TextInput } from '@sanity/ui'
 
 interface EditorFieldProps {
   field: LayoutField
   data: LayoutData
   updateData: (data: LayoutData) => void
+  disabled: boolean
 }
 
 const EditorField: React.FC<EditorFieldProps> = ({
   field,
   data = {},
   updateData,
+  disabled,
 }) => {
   if (!field?.type || !field.name || !field.title || !updateData) {
     return null
@@ -53,6 +55,7 @@ const EditorField: React.FC<EditorFieldProps> = ({
             }
             field={fld}
             data={value}
+            disabled={disabled}
           />
         ))}
       </div>
@@ -67,27 +70,36 @@ const EditorField: React.FC<EditorFieldProps> = ({
   function onChange(
     e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) {
+    let value: string | boolean | number = e.currentTarget.value || ''
+    if (e.currentTarget.type === 'checkbox' && 'checked' in e.currentTarget) {
+      value = e.currentTarget.checked
+    }
+    if (e.currentTarget.type === 'number') {
+      value = Number(value)
+    }
     e.preventDefault()
     updateData({
       ...data,
-      [field.name]: e.currentTarget.value,
+      [field.name]: value,
     })
   }
-  console.log({ field })
+
+  const commonProps = {
+    onChange,
+    value,
+    disabled,
+  }
 
   return (
     <FormField label={label} description={field.description}>
       {field.type === 'boolean' && (
-        <Switch checked={value || false} onChange={onChange} />
+        <Switch checked={value === true} onChange={onChange} />
       )}
-      {field.type === 'text' && (
-        <TextArea onChange={onChange} value={value} rows={1} />
-      )}
+      {field.type === 'text' && <TextArea {...commonProps} rows={1} />}
       {(field.type === 'string' || field.type === 'number') && (
         <TextInput
           type={field.type === 'number' ? 'number' : 'text'}
-          value={value}
-          onChange={onChange}
+          {...commonProps}
         />
       )}
     </FormField>
