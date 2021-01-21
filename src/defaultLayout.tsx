@@ -1,3 +1,4 @@
+import { Card, Container, Text } from '@sanity/ui'
 import { EditorLayout, PrepareFunction, SanityImage } from '@types'
 import * as React from 'react'
 import Image from './Image'
@@ -12,10 +13,23 @@ export const DefaultComponent: React.FC<DefaultLayoutProps> = ({
   logo,
 }) => {
   return (
-    <div>
-      {title}
-      <Image image={logo} width={500} />
-    </div>
+    <Card
+      scheme="light"
+      style={{
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+        alignItems: 'center',
+        border: '5px solid red',
+        boxSizing: 'border-box',
+      }}
+      padding={3}
+    >
+      <Container>
+        <Text size={3}>{title}</Text>
+        <Image image={logo} width={500} />
+      </Container>
+    </Card>
   )
 }
 
@@ -40,6 +54,18 @@ export const defaultPrepare: PrepareFunction<DefaultLayoutProps> = (
 const defaultLayout: EditorLayout = {
   component: DefaultComponent,
   prepare: defaultPrepare,
+  fields: [
+    {
+      title: 'Title',
+      name: 'title',
+      type: 'string',
+    },
+    {
+      title: 'Logo / image',
+      name: 'logo',
+      type: 'image',
+    },
+  ],
 }
 
 export default defaultLayout
