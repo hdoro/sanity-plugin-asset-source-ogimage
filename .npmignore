@@ -1,2 +1,14 @@
 .git
+.vscode
+node_modules
 src
+lib/testLayouts
+
+.d.ts
+.eslintignore
+.gitignore
+.prettierignore
+.prettierrc
+DESIGN_INSPIRATION.md
+eslintrc.json
+tsconfig.json

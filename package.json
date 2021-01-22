@@ -1,8 +1,8 @@
 {
   "name": "sanity-plugin-asset-source-ogimage",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Allow editors to generate social sharing images on the fly inside of Sanity.",
-  "main": "index.js",
+  "main": "lib/index.js",
   "keywords": [
     "sanity",
     "plugin",
@@ -13,16 +13,16 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/kaordica/sanity-plugin-asset-source-ogimage"
+    "url": "https://github.com/hdoro/sanity-plugin-asset-source-ogimage"
   },
   "bugs": {
-    "url": "https://github.com/kaordica/sanity-plugin-asset-source-ogimage/issues"
+    "url": "https://github.com/hdoro/sanity-plugin-asset-source-ogimage/issues"
   },
-  "homepage": "https://github.com/kaordica/sanity-plugin-asset-source-ogimage#readme",
+  "homepage": "https://github.com/hdoro/sanity-plugin-asset-source-ogimage#readme",
   "author": {
-    "email": "henrique@kaordica.design",
-    "name": "Henrique Cavalieri",
-    "url": "https://kaordica.design"
+    "email": "opensource@hdoro.dev",
+    "name": "Henrique Doro",
+    "url": "https://hdoro.dev"
   },
   "license": "Apache-2.0",
   "licenses": [
@@ -37,24 +37,36 @@
     "README.md"
   ],
   "scripts": {
-    "build": "babel src -d lib --copy-files",
-    "dev": "npm run build && nodemon --watch src --exec npm run build",
+    "build": "tsc",
+    "dev": "tsc -w",
     "prepublish": "npm run build"
   },
   "peerDependencies": {
-    "@sanity/base": ">= 0.140.0",
-    "@sanity/components": ">= 0.140.0",
+    "@sanity/base": ">= 2.1.6",
+    "@sanity/components": ">= 2.1.6",
     "react": ">= 16.8",
     "react-dom": ">= 16.8"
   },
   "dependencies": {
-    "html-to-image": "^0.1.1"
+    "@sanity/icons": "^1.0.1",
+    "@sanity/image-url": "^0.140.19",
+    "@sanity/ui": "^0.32.6",
+    "downloadjs": "^1.4.7",
+    "html-to-image": "^1.3.21",
+    "is-hotkey": "^0.2.0",
+    "styled-components": "^5.2.1"
   },
   "devDependencies": {
-    "@babel/cli": "^7.7.4",
-    "@babel/core": "^7.7.4",
-    "@babel/preset-env": "^7.7.4",
-    "@babel/preset-react": "^7.7.4",
-    "nodemon": "^2.0.1"
+    "@types/is-hotkey": "^0.1.2",
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
+    "@typescript-eslint/eslint-plugin": "^4.14.0",
+    "@typescript-eslint/parser": "^4.14.0",
+    "eslint": "^7.18.0",
+    "eslint-config-prettier": "^7.2.0",
+    "eslint-plugin-react": "^7.22.0",
+    "nodemon": "^2.0.7",
+    "prettier": "^2.2.1",
+    "typescript": "^4.1.3"
   }
 }
