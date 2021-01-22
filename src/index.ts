@@ -10,3 +10,8 @@ export default {
   // component: TestInstance,
   icon: ImageIcon,
 }
+
+import Image from './Image'
+import defaultLayout, { DefaultLayoutComponent } from './defaultLayout'
+
+export { Image, MediaEditor, defaultLayout, DefaultLayoutComponent }

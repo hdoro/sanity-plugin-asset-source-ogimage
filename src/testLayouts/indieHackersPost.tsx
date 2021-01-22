@@ -7,7 +7,7 @@ interface LayoutProps {
   userAvatar: SanityImage
 }
 
-const Component: React.FC<LayoutProps> = ({ title, userName, userAvatar }) => (
+const Component: React.FC<LayoutProps> = ({ title, userName }) => (
   <div
     style={{
       height: '100%',

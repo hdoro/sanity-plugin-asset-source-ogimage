@@ -1,4 +1,4 @@
-import { Card, Container, Stack, Text } from '@sanity/ui'
+import { Card, Container, Stack } from '@sanity/ui'
 import { EditorLayout, PrepareFunction, SanityImage } from '@types'
 import * as React from 'react'
 import styled from 'styled-components'
@@ -30,7 +30,7 @@ const LogoWrapper = styled.div`
   bottom: 1em;
 `
 
-export const DefaultComponent: React.FC<DefaultLayoutProps> = ({
+export const DefaultLayoutComponent: React.FC<DefaultLayoutProps> = ({
   title,
   logo,
   subtitle,
@@ -87,7 +87,7 @@ export const defaultPrepare: PrepareFunction<DefaultLayoutProps> = (
 const defaultLayout: EditorLayout<DefaultLayoutProps> = {
   name: 'default',
   title: 'Default layout',
-  component: DefaultComponent,
+  component: DefaultLayoutComponent,
   prepare: defaultPrepare,
   fields: [
     {
