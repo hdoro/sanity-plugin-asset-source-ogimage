@@ -1,6 +1,6 @@
 import React from 'react'
 import FormField from 'part:@sanity/components/formfields/default'
-import { LayoutData, LayoutField } from '@types'
+import { LayoutData, LayoutField, LayoutFieldTypes } from '@types'
 import { Box, Stack, Switch, Text, TextArea, TextInput } from '@sanity/ui'
 
 interface EditorFieldProps {
@@ -10,19 +10,27 @@ interface EditorFieldProps {
   disabled: boolean
 }
 
+const UNSUPORTED_TYPES: LayoutFieldTypes[] = [
+  'array',
+  'date',
+  'datetime',
+  'image',
+  'reference',
+]
+
 const EditorField: React.FC<EditorFieldProps> = ({
   field,
   data = {},
   updateData,
   disabled,
 }) => {
-  if (!field?.type || !field.name || !field.title || !updateData) {
+  if (!field?.type || !field.name || !updateData) {
     return null
   }
   const label = field.title || field.name
   const value = data[field.name] || undefined
 
-  if (field.type === 'array' || field.type === 'image') {
+  if (UNSUPORTED_TYPES.includes(field.type)) {
     return (
       <Box marginTop={2}>
         <Stack space={2}>

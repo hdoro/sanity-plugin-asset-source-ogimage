@@ -25,10 +25,16 @@ function useEditorLogic(
   const disabled = status === 'loading'
 
   const [activeLayout, setActiveLayout] = React.useState<EditorLayout>(
-    (props.layouts && props.layouts[0]) || defaultLayout,
+    props.layouts && props.layouts[0]?.component
+      ? props.layouts[0]
+      : defaultLayout,
   )
   const [data, setData] = React.useState<LayoutData>(
-    activeLayout.prepare(props.document || { _id: 'unknown' }),
+    // Only asset sources (which include onSelect) should use the prepare function
+    activeLayout.prepare && props.onSelect
+      ? activeLayout.prepare(props.document)
+      : // Studio tools should start with empty data
+        {},
   )
 
   React.useEffect(() => {
@@ -64,7 +70,7 @@ function useEditorLogic(
           },
         ])
       } else {
-        download(imgBase64, 'test.png')
+        download(imgBase64, 'generated.png')
       }
     } catch (error) {
       setStatus('error')

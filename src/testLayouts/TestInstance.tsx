@@ -1,14 +1,21 @@
 import React from 'react'
 
 import MediaEditor from '../app'
-import indieHackersPost from './IndieHackersPost'
-import podcastInstagramPicture from './podcastInstagramPicture'
+import blogPostInstagram from './blogPostInstagram'
+import hdoroDevOgImage from './hdoroDevOgImage'
+import interviewTwitter from './interviewTwitter'
+import podcastInstagram from './podcastInstagram'
 
 const ComponentName: React.FC<any> = (props) => {
   return (
     <MediaEditor
       {...props}
-      layouts={[podcastInstagramPicture, indieHackersPost]}
+      layouts={[
+        podcastInstagram,
+        interviewTwitter,
+        hdoroDevOgImage,
+        blogPostInstagram,
+      ]}
     />
   )
 }

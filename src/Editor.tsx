@@ -1,17 +1,7 @@
-import {
-  Box,
-  Button,
-  Card,
-  Flex,
-  Inline,
-  Spinner,
-  Stack,
-  Text,
-} from '@sanity/ui'
+import { Button, Card, Flex, Inline, Spinner, Stack, Text } from '@sanity/ui'
 import { CloseIcon, GenerateIcon } from '@sanity/icons'
 import { DialogLabels, EditorLayout, SanityDocument } from '@types'
 import * as React from 'react'
-import styled from 'styled-components'
 
 import EditorField from './EditorField'
 import LayoutsPicker from './LayoutsPicker'
@@ -29,12 +19,6 @@ const DEFAULT_DIMENSIONS = {
   width: 1200,
   height: 630,
 }
-
-const Wrapper = styled(Flex)`{
-  &:not([hidden]) {
-    flex-wrap: wrap;
-  }
-`
 
 const Editor: React.FC<EditorProps> = (props) => {
   const {
@@ -95,13 +79,19 @@ const Editor: React.FC<EditorProps> = (props) => {
       </Card>
       <Flex
         justify="flex-start"
+        align="flex-start"
         wrap="wrap"
         overflow="auto"
-        style={{ width: '100%', height: 'auto', flex: 1, minHeight: '0' }}
+        style={{ width: '100%', height: 'auto', minHeight: '0' }}
         sizing="border"
         padding={3}
       >
-        <Card padding={3} marginRight={4}>
+        <Card
+          padding={3}
+          marginRight={4}
+          style={{ maxWidth: '350px', flex: '1 0 200px' }}
+          sizing="border"
+        >
           <Stack space={4}>
             {fields.map((field) => (
               <EditorField
@@ -117,9 +107,11 @@ const Editor: React.FC<EditorProps> = (props) => {
           height="fill"
           overflow="auto"
           style={{
-            maxWidth: `${width}px`,
+            padding: '20px 10px',
+            maxWidth: `${width + 10 * 2}px`,
           }}
           shadow={3}
+          sizing="border"
         >
           <Stack space={3}>
             <LayoutsPicker

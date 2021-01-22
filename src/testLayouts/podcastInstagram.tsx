@@ -45,8 +45,8 @@ const Component: React.FC<LayoutProps> = ({
   </div>
 )
 
-const podcastInstagramPicture: EditorLayout<LayoutProps> = {
-  name: 'instagramPodcast',
+const podcastInstagram: EditorLayout<LayoutProps> = {
+  name: 'podcastInstagram',
   title: 'Instagram podcast',
   component: Component,
   prepare: (document) => {
@@ -71,9 +71,9 @@ const podcastInstagramPicture: EditorLayout<LayoutProps> = {
     { name: 'backgroundImage', title: 'backgroundImage', type: 'image' },
   ],
   dimensions: {
-    width: 400,
-    height: 400,
+    width: 1080,
+    height: 1080,
   },
 }
 
-export default podcastInstagramPicture
+export default podcastInstagram

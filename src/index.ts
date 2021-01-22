@@ -1,6 +1,7 @@
 import { ImageIcon } from '@sanity/icons'
 
 import MediaEditor from './app'
+// For testing locally
 // import TestInstance from './testLayouts/TestInstance'
 
 export default {
