@@ -4,6 +4,10 @@ Allow editors to easily create sharing images customized to their branding and s
 
 ![GIF showing this plugin in action](/images/demonstration-gif.gif)
 
+You can follow a [video tutorial](https://www.youtube.com/watch?v=w68Cx35VcVY) or read through the installing section below:
+
+[![Screenshot of the video](https://i.ytimg.com/vi/w68Cx35VcVY/maxresdefault.jpg)](https://www.youtube.com/watch?v=w68Cx35VcVY)
+
 ## Installing
 
 This plugin is not installable via `sanity install` because it requires extra configuration to work. Start by installing it through npm / yarn:
@@ -13,6 +17,8 @@ This plugin is not installable via `sanity install` because it requires extra co
 npm install sanity-plugin-asset-source-ogimage
 yarn install sanity-plugin-asset-source-ogimage
 ```
+
+🚨 You need `@sanity/core` 2.2.0 or greater.
 
 ### Adding it to image fields
 
