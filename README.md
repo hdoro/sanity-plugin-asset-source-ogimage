@@ -410,6 +410,20 @@ However, this quickly amounts to a bunch of unused image files which pollute our
 
 Refer to the [Design Inspirations doc](https://github.com/hdoro/sanity-plugin-asset-source-ogimage/blob/main/DESIGN_INSPIRATION.md) for cool OG image designs that might spark some ideas 😉 -->
 
+## Ideas from the community
+
+Between parenthesis is the Twitch username of who suggested these:
+
+- Name badges (geoffjball)
+- Meme generator (anniepen)
+- presentations (rennehir)
+- ads for for marketing teams (kevpedia)
+- product builder with layers (brentrobbins)
+- certificates of completion (geoffjball)
+- instagram stories (lennart_gastler)
+- Google Streets map to render an address (brentrobbins)
+- 3D models with WebGL (locheed_83)
+
 ## Contributing
 
 As long as you are respectful, feel free to chime in with ideas, bug reports, feature requests and PRs 😊
