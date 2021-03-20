@@ -380,7 +380,7 @@ However, this quickly amounts to a bunch of unused image files which pollute our
   "unused-delete-me": *[
     _type == "sanity.imageAsset" &&
     source.name == "asset-source-ogimage" &&
-    count(*[references(^._id)]) > 0
+    count(*[references(^._id)]) <= 0
   ] {
     _id,
     _createdAt,
