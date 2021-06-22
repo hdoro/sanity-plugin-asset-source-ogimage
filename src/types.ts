@@ -103,4 +103,10 @@ export type EditorLayout<Data = LayoutData> = {
     width: number
     height: number
   }
+  /**
+   * URL to serverless function for rendering the generated layout.
+   * Only required if the default renderer can't handle your layout.
+   * Check docs for how to use this function.
+   */
+  renderEndpoint?: string
 }

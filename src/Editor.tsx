@@ -2,6 +2,8 @@ import { Button, Card, Flex, Inline, Spinner, Stack, Text } from '@sanity/ui'
 import { CloseIcon, GenerateIcon } from '@sanity/icons'
 import { DialogLabels, EditorLayout, SanityDocument } from '@types'
 import * as React from 'react'
+import Frame, { FrameContextConsumer } from 'react-frame-component'
+import { StyleSheetManager } from 'styled-components'
 
 import EditorField from './EditorField'
 import LayoutsPicker from './LayoutsPicker'
@@ -121,16 +123,42 @@ const Editor: React.FC<EditorProps> = (props) => {
               setActiveLayout={setActiveLayout}
             />
 
-            <div
+            <Frame
               style={{
                 width: `${width}px`,
                 height: `${height}px`,
                 boxSizing: 'border-box',
+                border: 'none',
               }}
               ref={captureRef}
+              initialContent={`<!DOCTYPE html><html>
+                <head>
+                  <style>
+                    body, html, #generator-frame-root, .frame-content {
+                      margin: 0;
+                      width: ${width}px;
+                      height: ${height}px;
+                      boxSizing: border-box;
+                    }
+                    .frame-content {
+                      padding: 0.1px;
+                    }
+                  </style>
+                </head>
+                <body><div id="generator-frame-root"></div></body>
+              </html>`}
+              mountTarget="#generator-frame-root"
             >
-              <LayoutComponent {...data} />
-            </div>
+              <FrameContextConsumer>
+                {({ document }) => {
+                  return (
+                    <StyleSheetManager target={document.head}>
+                      <LayoutComponent {...data} __head={document.head} />
+                    </StyleSheetManager>
+                  )
+                }}
+              </FrameContextConsumer>
+            </Frame>
           </Stack>
         </Card>
       </Flex>

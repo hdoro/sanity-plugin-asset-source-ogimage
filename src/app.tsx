@@ -89,7 +89,7 @@ const MediaEditor = (props: Props) => {
               position: 'fixed',
               top: 0,
               width: '100%',
-              zIndex: 10000,
+              zIndex: 50000000,
             }}
           >
             <Editor {...editorProps} />

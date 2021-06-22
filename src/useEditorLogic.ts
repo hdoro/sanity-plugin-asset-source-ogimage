@@ -48,10 +48,20 @@ function useEditorLogic(
     }
     try {
       setStatus('loading')
-      const imgBase64 = await toPng(captureRef.current, {
-        quality: 1,
-        pixelRatio: 1,
-      })
+      let imgBase64: string
+      if (activeLayout.renderEndpoint) {
+        const html = captureRef.current.getDoc().documentElement.outerHTML
+        imgBase64 = await (
+          await fetch(
+            `${activeLayout.renderEndpoint}?html=${encodeURIComponent(html)}`,
+          )
+        ).text()
+      } else {
+        imgBase64 = await toPng(captureRef.current.getMountTarget(), {
+          quality: 1,
+          pixelRatio: 1,
+        })
+      }
       setStatus('success')
       if (props.onSelect) {
         props.onSelect([
