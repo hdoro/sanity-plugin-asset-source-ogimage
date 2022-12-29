@@ -2,7 +2,7 @@ import React from 'react'
 import Image from '../Image'
 
 // import css from './TwitterImageLayout.module.css'
-import { SanityImage, EditorLayout } from '@types'
+import { SanityImage, EditorLayout } from '../types'
 
 // As this plugin's repo doesn't have css modules enabled, I'm not actually implementing styles
 const css = {} as any
@@ -24,7 +24,7 @@ const svgPic: SanityImage = {
   },
 }
 
-const Component = ({ title }) => {
+const Component = ({ title }: any) => {
   return (
     <div className={css.root}>
       <h1 className={css.title}>{title || 'Title missing'}</h1>

@@ -1,15 +1,9 @@
-import {
-  Box,
-  Portal,
-  ThemeProvider,
-  studioTheme,
-  useGlobalKeyDown,
-} from '@sanity/ui'
+import { Box, Portal, ThemeProvider, studioTheme, useGlobalKeyDown } from '@sanity/ui'
 import React from 'react'
 import isHotkey from 'is-hotkey'
-import { SanityDocument, EditorLayout, DialogLabels } from '@types'
+import { SanityDocument, EditorLayout, DialogLabels } from './types'
 import defaultLayout from './defaultLayout'
-import Editor from './Editor'
+import Editor from './components/Editor'
 
 interface SelectedAsset {
   [key: string]: any
@@ -46,9 +40,8 @@ const MediaEditor = (props: Props) => {
   }, [])
   useGlobalKeyDown(handleGlobalKeyDown)
 
-  let layouts = props.layouts?.filter(
-    (layout) => layout.prepare && layout.component,
-  )
+  let layouts: EditorLayout[] =
+    props.layouts?.filter((layout) => layout.prepare && layout.component) || []
   if (!layouts?.length) {
     layouts = [defaultLayout]
   }

@@ -1,4 +1,4 @@
-import { EditorLayout, SanityImage } from '@types'
+import { EditorLayout, SanityImage } from '../types'
 import React from 'react'
 import Image from '../Image'
 
@@ -9,12 +9,7 @@ interface LayoutProps {
   intervieweePhoto?: SanityImage
 }
 
-const Component: React.FC<LayoutProps> = ({
-  title,
-  intervieweeName,
-  intervieweePhoto,
-  quote,
-}) => (
+const Component: React.FC<LayoutProps> = ({ title, intervieweeName, intervieweePhoto, quote }) => (
   <div
     style={{
       height: '100%',

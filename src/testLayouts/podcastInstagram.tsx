@@ -1,4 +1,4 @@
-import { EditorLayout, SanityImage } from '@types'
+import { EditorLayout, SanityImage } from '../types'
 import React from 'react'
 import Image from '../Image'
 

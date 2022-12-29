@@ -1,7 +1,7 @@
-import React from 'react'
-import FormField from 'part:@sanity/components/formfields/default'
-import { LayoutData, LayoutField, LayoutFieldTypes } from '@types'
 import { Box, Stack, Switch, Text, TextArea, TextInput } from '@sanity/ui'
+import React from 'react'
+import { FormField } from 'sanity'
+import { LayoutData, LayoutField, LayoutFieldTypes } from '../types'
 
 interface EditorFieldProps {
   field: LayoutField
@@ -10,20 +10,9 @@ interface EditorFieldProps {
   disabled: boolean
 }
 
-const UNSUPORTED_TYPES: LayoutFieldTypes[] = [
-  'array',
-  'date',
-  'datetime',
-  'image',
-  'reference',
-]
+const UNSUPORTED_TYPES: LayoutFieldTypes[] = ['array', 'date', 'datetime', 'image', 'reference']
 
-const EditorField: React.FC<EditorFieldProps> = ({
-  field,
-  data = {},
-  updateData,
-  disabled,
-}) => {
+const EditorField: React.FC<EditorFieldProps> = ({ field, data = {}, updateData, disabled }) => {
   if (!field?.type || !field.name || !updateData) {
     return null
   }
@@ -55,6 +44,7 @@ const EditorField: React.FC<EditorFieldProps> = ({
       <div>
         {field.fields.map((fld) => (
           <EditorField
+            key={fld.name}
             updateData={(newData) =>
               updateData({
                 ...data,
@@ -75,20 +65,18 @@ const EditorField: React.FC<EditorFieldProps> = ({
     return null
   }
 
-  function onChange(
-    e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) {
-    let value: string | boolean | number = e.currentTarget.value || ''
+  function onChange(e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>) {
+    let newValue: string | boolean | number = e.currentTarget.value || ''
     if (e.currentTarget.type === 'checkbox' && 'checked' in e.currentTarget) {
-      value = e.currentTarget.checked
+      newValue = e.currentTarget.checked
     }
     if (e.currentTarget.type === 'number') {
-      value = Number(value)
+      newValue = Number(newValue)
     }
     e.preventDefault()
     updateData({
       ...data,
-      [field.name]: value,
+      [field.name]: newValue,
     })
   }
 
@@ -100,15 +88,10 @@ const EditorField: React.FC<EditorFieldProps> = ({
 
   return (
     <FormField label={label} description={field.description}>
-      {field.type === 'boolean' && (
-        <Switch checked={value === true} onChange={onChange} />
-      )}
+      {field.type === 'boolean' && <Switch checked={value === true} onChange={onChange} />}
       {field.type === 'text' && <TextArea {...commonProps} rows={1} />}
       {(field.type === 'string' || field.type === 'number') && (
-        <TextInput
-          type={field.type === 'number' ? 'number' : 'text'}
-          {...commonProps}
-        />
+        <TextInput type={field.type === 'number' ? 'number' : 'text'} {...commonProps} />
       )}
     </FormField>
   )

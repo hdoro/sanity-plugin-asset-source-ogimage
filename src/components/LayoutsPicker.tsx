@@ -1,6 +1,6 @@
 import { Box, Button, Inline, Text } from '@sanity/ui'
-import { EditorLayout } from '@types'
 import * as React from 'react'
+import { EditorLayout } from '../types'
 
 interface LayoutsPickerProps {
   layouts?: EditorLayout[]
@@ -28,9 +28,7 @@ const LayoutsPicker: React.FC<LayoutsPickerProps> = (props) => {
           <Button
             key={layout.name || layout.title || `${i}-layout`}
             mode={props.activeLayout.name === layout.name ? 'default' : 'ghost'}
-            tone={
-              props.activeLayout.name === layout.name ? 'positive' : 'default'
-            }
+            tone={props.activeLayout.name === layout.name ? 'positive' : 'default'}
             text={layout.title || layout.name}
             onClick={() => props.setActiveLayout(layout)}
             disabled={props.disabled}

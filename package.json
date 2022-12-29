@@ -41,13 +41,13 @@
     "sanity.json"
   ],
   "scripts": {
-    "build": "pkg-utils build",
-    "prepublish": "npm run build",
     "prebuild": "npm run clean && plugin-kit verify-package --silent && pkg-utils",
+    "build": "pkg-utils build",
     "clean": "rimraf lib",
     "link-watch": "plugin-kit link-watch",
     "lint": "eslint .",
     "prepublishOnly": "npm run build",
+    "prepublish": "npm run build",
     "watch": "pkg-utils watch"
   },
   "dependencies": {
@@ -63,9 +63,11 @@
   "devDependencies": {
     "@sanity/pkg-utils": "^2.0.3",
     "@sanity/plugin-kit": "^2.2.0",
+    "@types/downloadjs": "^1.4.3",
     "@types/is-hotkey": "^0.1.7",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/styled-components": "^5.1.26",
     "@typescript-eslint/eslint-plugin": "^5.47.1",
     "@typescript-eslint/parser": "^5.47.1",
     "eslint": "^8.30.0",

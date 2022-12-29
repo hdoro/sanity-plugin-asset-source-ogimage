@@ -1,6 +1,7 @@
-import { SanityImage } from '@types'
+import { SanityImage } from './types'
 import * as React from 'react'
-import imageBuilder from './imageBuilder'
+import imageUrlBuilder from '@sanity/image-url'
+import { useDataset, useProjectId } from 'sanity'
 
 interface Props {
   image?: SanityImage
@@ -8,10 +9,15 @@ interface Props {
 }
 
 const Image: React.FC<Props> = (props) => {
+  const projectId = useProjectId()
+  const dataset = useDataset()
+
+  const builder = imageUrlBuilder({ projectId, dataset })
+
   if (!props.image?.asset?._ref) {
     return null
   }
-  const src = imageBuilder
+  const src = builder
     .image(props.image)
     .width(props.width || 500)
     .url()

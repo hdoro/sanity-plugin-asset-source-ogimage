@@ -1,11 +1,11 @@
 import { Button, Card, Flex, Inline, Spinner, Stack, Text } from '@sanity/ui'
 import { CloseIcon, GenerateIcon } from '@sanity/icons'
-import { DialogLabels, EditorLayout, SanityDocument } from '@types'
+import { DialogLabels, EditorLayout, SanityDocument } from '../types'
 import * as React from 'react'
 
 import EditorField from './EditorField'
 import LayoutsPicker from './LayoutsPicker'
-import useEditorLogic from './useEditorLogic'
+import useEditorLogic from '../useEditorLogic'
 
 export interface EditorProps {
   layouts: EditorLayout[]
@@ -21,15 +21,8 @@ const DEFAULT_DIMENSIONS = {
 }
 
 const Editor: React.FC<EditorProps> = (props) => {
-  const {
-    activeLayout,
-    setActiveLayout,
-    generateImage,
-    disabled,
-    captureRef,
-    data,
-    setData,
-  } = useEditorLogic(props)
+  const { activeLayout, setActiveLayout, generateImage, disabled, captureRef, data, setData } =
+    useEditorLogic(props)
 
   const LayoutComponent = activeLayout.component as any
   const fields = activeLayout.fields || []

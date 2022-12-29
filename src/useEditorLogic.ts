@@ -1,14 +1,11 @@
-import { EditorLayout, LayoutData } from '@types'
 import download from 'downloadjs'
 import { toPng } from 'html-to-image'
 import React from 'react'
-
+import { EditorProps } from './components/Editor'
 import defaultLayout from './defaultLayout'
-import { EditorProps } from './Editor'
+import { EditorLayout, LayoutData } from './types'
 
-function useEditorLogic(
-  props: EditorProps,
-): {
+function useEditorLogic(props: EditorProps): {
   activeLayout: EditorLayout
   setActiveLayout: (newLayout: EditorLayout) => void
   disabled: boolean
@@ -19,15 +16,11 @@ function useEditorLogic(
 } {
   const captureRef = React.useRef<HTMLDivElement>()
 
-  const [status, setStatus] = React.useState<
-    'idle' | 'error' | 'loading' | 'success'
-  >('idle')
+  const [status, setStatus] = React.useState<'idle' | 'error' | 'loading' | 'success'>('idle')
   const disabled = status === 'loading'
 
   const [activeLayout, setActiveLayout] = React.useState<EditorLayout>(
-    props.layouts && props.layouts[0]?.component
-      ? props.layouts[0]
-      : defaultLayout,
+    props.layouts && props.layouts[0]?.component ? props.layouts[0] : (defaultLayout as any),
   )
   const [data, setData] = React.useState<LayoutData>(
     // Only asset sources (which include onSelect) should use the prepare function
@@ -38,8 +31,10 @@ function useEditorLogic(
   )
 
   React.useEffect(() => {
+    if (!activeLayout?.prepare) return
+
     setData(activeLayout.prepare(props.document))
-  }, [activeLayout])
+  }, [activeLayout, setData, props.document])
 
   async function generateImage(e: React.FormEvent) {
     e.preventDefault()
@@ -59,9 +54,9 @@ function useEditorLogic(
             kind: 'base64',
             value: imgBase64,
             assetDocumentProps: {
-              originalFilename: `OG Image - ${
-                activeLayout.title || activeLayout.name
-              } - ${new Date(Date.now()).toISOString()}`,
+              originalFilename: `OG Image - ${activeLayout.title || activeLayout.name} - ${new Date(
+                Date.now(),
+              ).toISOString()}`,
               source: {
                 name: 'asset-source-ogimage',
                 id: 'asset-source-ogimage',

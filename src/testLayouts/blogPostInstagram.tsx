@@ -1,7 +1,8 @@
 import React from 'react'
 import Image from '../Image'
+import { EditorLayout } from '../types'
 
-const blogPostInstagram = {
+const blogPostInstagram: EditorLayout<any> = {
   name: 'blogPostInstagram',
   title: 'Blog post (Instagram)',
   // Start defining the form editors will fill to change the final image
@@ -24,8 +25,6 @@ const blogPostInstagram = {
       name: 'authorImage',
       title: "Author's image",
       type: 'image',
-      unsupportedError:
-        'We get this automatically from the chosen author. Close this dialog and change it in the document to reflect it here.',
     },
     {
       name: 'authorName',
@@ -36,9 +35,9 @@ const blogPostInstagram = {
     return {
       title: document.title,
       subtitle: document.subtitle || document.excerpt,
-      date: new Date(
-        document._createdAt ? document._createdAt : Date.now(),
-      ).toLocaleDateString('en'),
+      date: new Date(document._createdAt ? document._createdAt : Date.now()).toLocaleDateString(
+        'en',
+      ),
       authorImage: document.author?.image,
       authorName: document.author?.name,
     }

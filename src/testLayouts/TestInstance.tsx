@@ -6,16 +6,11 @@ import hdoroDevOgImage from './hdoroDevOgImage'
 import interviewTwitter from './interviewTwitter'
 import podcastInstagram from './podcastInstagram'
 
-const ComponentName: React.FC<any> = (props) => {
+const ComponentName = (props: any) => {
   return (
     <MediaEditor
       {...props}
-      layouts={[
-        podcastInstagram,
-        interviewTwitter,
-        hdoroDevOgImage,
-        blogPostInstagram,
-      ]}
+      layouts={[podcastInstagram, interviewTwitter, hdoroDevOgImage, blogPostInstagram]}
     />
   )
 }

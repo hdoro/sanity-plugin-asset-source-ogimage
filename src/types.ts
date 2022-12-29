@@ -1,3 +1,6 @@
+import React from 'react'
+import { FieldDefinition } from 'sanity'
+
 export interface SanityDocument {
   _id: string
   [key: string]: any
@@ -30,9 +33,7 @@ export interface LayoutData {
   [key: string]: any
 }
 
-export type PrepareFunction<Data = LayoutData> = (
-  document: SanityDocument,
-) => Data
+export type PrepareFunction<Data = LayoutData> = (document: SanityDocument) => Data
 
 export type LayoutFieldTypes =
   | 'string'
@@ -46,32 +47,7 @@ export type LayoutFieldTypes =
   | 'datetime'
   | 'reference'
 
-export interface LayoutField {
-  /**
-   * Labels for editors changing the value of the property live.
-   */
-  title: string
-  description?: string
-  /**
-   * Equivalent to the property name in prepare's resulting LayoutData object.
-   */
-  name: string
-  /**
-   * Array, date, datetime, reference and image aren't supported (yet?)
-   */
-  type: LayoutFieldTypes
-  /**
-   * Exclusive to objects
-   */
-  fields?: LayoutField[]
-  /**
-   * Helpful error message for editors when they can't edit that given field in the Editor dialog.
-   * Exclusive to non-supported types
-   */
-  unsupportedError?: string
-}
-
-export type EditorLayout<Data = LayoutData> = {
+export type EditorLayout<Data = any> = {
   /**
    * Needs to be unique to identify this layout among others.
    */
@@ -92,7 +68,7 @@ export type EditorLayout<Data = LayoutData> = {
   /**
    * Fields editable by users to change the component data and see changes in the layout live.
    */
-  fields?: LayoutField[]
+  fields?: FieldDefinition[]
   /**
    * Common examples include:
    * 1200x630 - Twitter, LinkedIn & Facebook

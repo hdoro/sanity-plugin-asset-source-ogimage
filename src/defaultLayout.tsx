@@ -1,5 +1,5 @@
 import { Card, Container, Stack } from '@sanity/ui'
-import { EditorLayout, PrepareFunction, SanityImage } from '@types'
+import { EditorLayout, PrepareFunction, SanityImage } from './types'
 import * as React from 'react'
 import styled from 'styled-components'
 
@@ -66,20 +66,11 @@ export const DefaultLayoutComponent: React.FC<DefaultLayoutProps> = ({
 }
 
 // Ideally, users will provide their own prepare function, this is an unlikely fallback
-export const defaultPrepare: PrepareFunction<DefaultLayoutProps> = (
-  document,
-) => {
+export const defaultPrepare: PrepareFunction<DefaultLayoutProps> = (document) => {
   return {
     // Possible common values for title & image
-    title:
-      document.title ||
-      document.seoTitle | document.seo?.title ||
-      document.hero?.title,
-    logo:
-      document.ogImage ||
-      document.image ||
-      document.hero?.image ||
-      document.logo,
+    title: document.title || document.seoTitle || document.seo?.title || document.hero?.title,
+    logo: document.ogImage || document.image || document.hero?.image || document.logo,
     includeBorder: false,
   }
 }
