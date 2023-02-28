@@ -1,31 +1,75 @@
-import { Button, Card, Flex, Inline, Spinner, Stack, Text } from '@sanity/ui'
 import { CloseIcon, GenerateIcon } from '@sanity/icons'
-import { DialogLabels, EditorLayout, SanityDocument } from '../types'
-import * as React from 'react'
-
-import EditorField from './EditorField'
-import LayoutsPicker from './LayoutsPicker'
+import { Button, Card, Flex, Inline, Spinner, Stack, Text } from '@sanity/ui'
+import { useCallback, useMemo, useState } from 'react'
+import {
+  createPatchChannel,
+  FormBuilder,
+  PatchEvent,
+  SanityDocument,
+  useDocumentPresence,
+  useFormState,
+  useFormValue,
+} from 'sanity'
+import { EditorProps } from '../types'
 import useEditorLogic from '../useEditorLogic'
-
-export interface EditorProps {
-  layouts: EditorLayout[]
-  onSelect?: (...props: any) => void
-  onClose?: () => void
-  dialog?: DialogLabels
-  document: SanityDocument
-}
+import LayoutsPicker from './LayoutsPicker'
 
 const DEFAULT_DIMENSIONS = {
   width: 1200,
   height: 630,
 }
 
-const Editor: React.FC<EditorProps> = (props) => {
-  const { activeLayout, setActiveLayout, generateImage, disabled, captureRef, data, setData } =
-    useEditorLogic(props)
-
-  const LayoutComponent = activeLayout.component as any
+const Editor = (props: EditorProps) => {
+  const {
+    activeLayout,
+    setActiveLayout,
+    generateImage,
+    disabled,
+    captureRef,
+    formData,
+    setFormData,
+  } = useEditorLogic(props)
   const fields = activeLayout.fields || []
+  const document = useFormValue([]) as SanityDocument
+  const schemaType: Parameters<typeof useFormState>[0] = {
+    fields: fields as any,
+    name: `media-editor--${activeLayout.name}`,
+    jsonType: 'object',
+    // eslint-disable-next-line
+    __experimental_search: [],
+  }
+  const [value, setValue] = useState()
+
+  const onChange = useCallback((changeEvent: PatchEvent) => {
+    console.log(changeEvent)
+  }, [])
+  // const state = useFormState(schemaType, {
+
+  // })
+  // state.
+  // const formBuilderContext = useFormBuilder()
+  // formBuilderContext.
+
+  // const {
+  //   // validation,
+  //   formState,
+  //   // collapsedFieldSets,
+  //   // collapsedPaths,
+  //   // onChange,
+  //   // editState,
+  //   // documentId,
+  //   // documentType,
+  //   // ready,
+  //   // onFocus,
+  //   // onBlur,
+  //   // onSetCollapsedPath,
+  //   // onPathOpen,
+  //   // onSetCollapsedFieldSet,
+  //   // onSetActiveFieldGroup,
+  // } = useDocumentPane()
+  const presence = useDocumentPresence(document?._id || '')
+  const patchChannel = useMemo(() => createPatchChannel(), [])
+  const LayoutComponent = activeLayout.component
 
   const width = activeLayout.dimensions?.width || DEFAULT_DIMENSIONS.width
   const height = activeLayout.dimensions?.height || DEFAULT_DIMENSIONS.height
@@ -42,7 +86,7 @@ const Editor: React.FC<EditorProps> = (props) => {
         tone="default"
         padding={4}
         marginBottom={[4, 0]}
-        borderBottom={true}
+        borderBottom
         style={{ textAlign: 'right' }}
       >
         <Flex justify="space-between" align="center">
@@ -66,7 +110,7 @@ const Editor: React.FC<EditorProps> = (props) => {
               mode="bleed"
               tone="critical"
               title={props.dialog?.ariaClose || 'close'}
-            ></Button>
+            />
           )}
         </Flex>
       </Card>
@@ -86,14 +130,42 @@ const Editor: React.FC<EditorProps> = (props) => {
           sizing="border"
         >
           <Stack space={4}>
-            {fields.map((field) => (
-              <EditorField
-                field={field}
-                updateData={(newData) => setData(newData)}
-                data={data}
-                disabled={disabled}
-              />
-            ))}
+            {/* <FormBuilder
+              __internal_patchChannel={patchChannel}
+              collapsedFieldSets={undefined}
+              collapsedPaths={undefined}
+              focusPath={[]}
+              changed
+              focused
+              id="media-editor"
+              presence={presence}
+              schemaType={schemaType}
+              onChange={onChange}
+              value={value}
+              onFieldGroupSelect={console.info}
+              onPathBlur={console.info}
+              onPathFocus={console.info}
+              onPathOpen={console.info}
+              onSetFieldSetCollapsed={console.info}
+              onSetPathCollapsed={console.info}
+              groups={[]}
+              members={[]}
+              validation={[]}
+              // focusPath={formState.focusPath}
+              // groups={formState.groups}
+              // members={formState.members}
+              // collapsedFieldSets={collapsedFieldSets}
+              // collapsedPaths={collapsedPaths}
+              // onChange={onChange}
+              // onFieldGroupSelect={onSetActiveFieldGroup}
+              // onPathBlur={onBlur}
+              // onPathFocus={onFocus}
+              // onPathOpen={onPathOpen}
+              // onSetFieldSetCollapsed={onSetCollapsedFieldSet}
+              // onSetPathCollapsed={onSetCollapsedPath}
+              // validation={validation}
+              // value={formState.value}
+            /> */}
           </Stack>
         </Card>
         <Card
@@ -122,7 +194,7 @@ const Editor: React.FC<EditorProps> = (props) => {
               }}
               ref={captureRef}
             >
-              <LayoutComponent {...data} />
+              {LayoutComponent && <LayoutComponent document={document} formData={formData} />}
             </div>
           </Stack>
         </Card>

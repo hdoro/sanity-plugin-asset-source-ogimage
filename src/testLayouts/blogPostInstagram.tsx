@@ -1,8 +1,17 @@
+import { SanityImageObject } from '@sanity/image-url/lib/types/types'
 import React from 'react'
-import Image from '../Image'
+import { SanityImage } from '../SanityImage'
 import { EditorLayout } from '../types'
 
-const blogPostInstagram: EditorLayout<any> = {
+const blogPostInstagram: EditorLayout<
+  {
+    title: string
+    subtitle: string
+    date: string
+    authorName: string
+  },
+  { authorImage?: SanityImageObject }
+> = {
   name: 'blogPostInstagram',
   title: 'Blog post (Instagram)',
   // Start defining the form editors will fill to change the final image
@@ -31,29 +40,18 @@ const blogPostInstagram: EditorLayout<any> = {
       type: 'string',
     },
   ],
-  prepare: (document) => {
-    return {
-      title: document.title,
-      subtitle: document.subtitle || document.excerpt,
-      date: new Date(document._createdAt ? document._createdAt : Date.now()).toLocaleDateString(
-        'en',
-      ),
-      authorImage: document.author?.image,
-      authorName: document.author?.name,
-    }
-  },
   dimensions: {
     width: 1080,
     height: 1080,
   },
-  component: ({ title, subtitle, date, authorImage, authorName }) => (
+  component: ({ formData: { title, subtitle, date, authorName }, document: { authorImage } }) => (
     <div>
       <h1>{title || 'Please insert a title'}</h1>
       {subtitle && <h2>{subtitle}</h2>}
       {date && <div>{date}</div>}
       {authorImage && authorName && (
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <Image image={authorImage} width={100} />
+          <SanityImage image={authorImage} width={100} />
           {authorName}
         </div>
       )}

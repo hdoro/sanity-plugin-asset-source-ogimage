@@ -1,40 +1,39 @@
 import download from 'downloadjs'
 import { toPng } from 'html-to-image'
 import React from 'react'
-import { EditorProps } from './components/Editor'
-import defaultLayout from './defaultLayout'
-import { EditorLayout, LayoutData } from './types'
+import { EditorLayout, EditorProps } from './types'
+
+type GenericLayoutData = Record<string, any>
 
 function useEditorLogic(props: EditorProps): {
   activeLayout: EditorLayout
   setActiveLayout: (newLayout: EditorLayout) => void
   disabled: boolean
   generateImage: (e: React.FormEvent) => void
-  captureRef: React.MutableRefObject<HTMLDivElement>
-  data: LayoutData
-  setData: (newData: LayoutData) => void
+  captureRef: React.MutableRefObject<HTMLDivElement | undefined>
+  formData: GenericLayoutData
+  setFormData: (newData: GenericLayoutData) => void
 } {
   const captureRef = React.useRef<HTMLDivElement>()
 
   const [status, setStatus] = React.useState<'idle' | 'error' | 'loading' | 'success'>('idle')
   const disabled = status === 'loading'
 
-  const [activeLayout, setActiveLayout] = React.useState<EditorLayout>(
-    props.layouts && props.layouts[0]?.component ? props.layouts[0] : (defaultLayout as any),
-  )
-  const [data, setData] = React.useState<LayoutData>(
+  const validLayouts = props.layouts?.filter((layout) => layout.component) || []
+  const [activeLayout, setActiveLayout] = React.useState<EditorLayout>(validLayouts[0])
+  const [formData, setFormData] = React.useState<GenericLayoutData>(
     // Only asset sources (which include onSelect) should use the prepare function
-    activeLayout.prepare && props.onSelect
-      ? activeLayout.prepare(props.document)
+    activeLayout.prepareFormData && props.onSelect
+      ? activeLayout.prepareFormData(props.document)
       : // Studio tools should start with empty data
         {},
   )
 
   React.useEffect(() => {
-    if (!activeLayout?.prepare) return
+    if (!activeLayout?.prepareFormData) return
 
-    setData(activeLayout.prepare(props.document))
-  }, [activeLayout, setData, props.document])
+    setFormData(activeLayout.prepareFormData(props.document))
+  }, [activeLayout, setFormData, props.document])
 
   async function generateImage(e: React.FormEvent) {
     e.preventDefault()
@@ -46,6 +45,7 @@ function useEditorLogic(props: EditorProps): {
       const imgBase64 = await toPng(captureRef.current, {
         quality: 1,
         pixelRatio: 1,
+        includeQueryParams: true,
       })
       setStatus('success')
       if (props.onSelect) {
@@ -79,8 +79,8 @@ function useEditorLogic(props: EditorProps): {
     disabled,
     generateImage,
     captureRef,
-    data,
-    setData,
+    formData,
+    setFormData,
   }
 }
 

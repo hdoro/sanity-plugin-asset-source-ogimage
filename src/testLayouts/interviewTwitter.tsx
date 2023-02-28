@@ -1,15 +1,22 @@
-import { EditorLayout, SanityImage } from '../types'
+import { EditorLayout, MediaLayoutComponent } from '../types'
 import React from 'react'
-import Image from '../Image'
+import { SanityImage } from '../SanityImage'
+import { SanityImageObject } from '@sanity/image-url/lib/types/types'
 
-interface LayoutProps {
-  title?: string
-  quote?: string
-  intervieweeName?: string
-  intervieweePhoto?: SanityImage
+interface FormData {
+  title: string
+  quote: string
+  intervieweeName: string
 }
 
-const Component: React.FC<LayoutProps> = ({ title, intervieweeName, intervieweePhoto, quote }) => (
+interface DocumentData {
+  intervieweePhoto?: SanityImageObject
+}
+
+const Component: MediaLayoutComponent<FormData, DocumentData> = ({
+  formData: { title, intervieweeName, quote },
+  document: { intervieweePhoto },
+}) => (
   <div
     style={{
       height: '100%',
@@ -26,16 +33,16 @@ const Component: React.FC<LayoutProps> = ({ title, intervieweeName, intervieweeP
       <h1>{title || 'Title'}</h1>
       {quote && <blockquote>{quote}</blockquote>}
       {intervieweeName && <p>{intervieweeName}</p>}
-      {intervieweePhoto && <Image image={intervieweePhoto} width={300} />}
+      {intervieweePhoto && <SanityImage image={intervieweePhoto} width={300} />}
     </div>
   </div>
 )
 
-const interviewTwitter: EditorLayout<LayoutProps> = {
+const interviewTwitter: EditorLayout<FormData, DocumentData> = {
   name: 'interviewTwitter',
   title: 'Interview (Twitter)',
   component: Component,
-  prepare: (document) => {
+  prepareFormData: (document) => {
     return {
       title: document.title || document.seoTitle,
       intervieweeName: document.author?.name,

@@ -1,14 +1,9 @@
-import { SanityImage } from './types'
 import * as React from 'react'
 import imageUrlBuilder from '@sanity/image-url'
 import { useDataset, useProjectId } from 'sanity'
+import { SanityImageObject } from '@sanity/image-url/lib/types/types'
 
-interface Props {
-  image?: SanityImage
-  width?: number
-}
-
-const Image: React.FC<Props> = (props) => {
+export const SanityImage = (props: { image?: SanityImageObject; width?: number }) => {
   const projectId = useProjectId()
   const dataset = useDataset()
 
@@ -28,5 +23,3 @@ const Image: React.FC<Props> = (props) => {
 
   return <img src={src} alt="" />
 }
-
-export default Image

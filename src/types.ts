@@ -1,18 +1,5 @@
 import React from 'react'
-import { FieldDefinition } from 'sanity'
-
-export interface SanityDocument {
-  _id: string
-  [key: string]: any
-}
-
-export interface SanityImage {
-  _type?: 'image'
-  asset: {
-    _ref: string
-    _type: 'reference'
-  }
-}
+import { AssetSourceComponentProps, FieldDefinition, SanityDocument } from 'sanity'
 
 export interface DialogLabels {
   /**
@@ -29,46 +16,42 @@ export interface DialogLabels {
   ariaClose?: string
 }
 
-export interface LayoutData {
-  [key: string]: any
-}
+export type MediaLayoutComponent<FormData = {}, DocumentData = {}> = React.ComponentType<{
+  formData: Partial<FormData>
+  document: DocumentData & SanityDocument
+}>
 
-export type PrepareFunction<Data = LayoutData> = (document: SanityDocument) => Data
+export type PrepareFunction<FormData = {}, DocumentData = {}> = (
+  document: DocumentData & SanityDocument,
+) => Partial<FormData>
 
-export type LayoutFieldTypes =
-  | 'string'
-  | 'text'
-  | 'number'
-  | 'image'
-  | 'object'
-  | 'boolean'
-  | 'array'
-  | 'date'
-  | 'datetime'
-  | 'reference'
-
-export type EditorLayout<Data = any> = {
+export type EditorLayout<FormData = {}, DocumentData = {}> = {
   /**
    * Needs to be unique to identify this layout among others.
    */
   name: string
+
   /**
    * Visible label to users. Only shows when we have 2 or more layouts.
    */
   title?: string
+
   /**
-   * React component which renders
+   * React component which renders the layout.
    */
-  component?: React.Component<Data> | React.FC<Data>
-  /**
-   * Function which gets the current document.
-   * Is irrelevant in the context of studio tools as the layout won't receive a document, so if you're only using it there you can ignore this.
-   */
-  prepare?: PrepareFunction<Data>
+  component?: MediaLayoutComponent<FormData, DocumentData>
+
   /**
    * Fields editable by users to change the component data and see changes in the layout live.
    */
   fields?: FieldDefinition[]
+
+  /**
+   * Function which gets the current document.
+   * Is irrelevant in the context of studio tools as the layout won't receive a document, so if you're only using it there you can ignore this.
+   */
+  prepareFormData?: PrepareFunction<FormData, DocumentData>
+
   /**
    * Common examples include:
    * 1200x630 - Twitter, LinkedIn & Facebook
@@ -80,3 +63,15 @@ export type EditorLayout<Data = any> = {
     height: number
   }
 }
+
+export interface EditorConfiguration {
+  layouts?: EditorLayout[]
+  dialog?: DialogLabels
+}
+
+export type EditorProps = {
+  // The props below are provided by Sanity
+  context?: 'tool' | 'asset-source'
+  document: SanityDocument
+} & EditorConfiguration &
+  Partial<AssetSourceComponentProps>

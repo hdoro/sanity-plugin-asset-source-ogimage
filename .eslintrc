@@ -12,6 +12,8 @@
     "plugin:prettier/recommended"
   ],
   "rules": {
-    "react/require-default-props": "off"
+    "react/require-default-props": "off",
+    "react/prop-types": "off",
+    "react/react-in-jsx-scope": "off"
   }
 }

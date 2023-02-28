@@ -1,24 +1,25 @@
-import { EditorLayout, SanityImage } from '../types'
+import { EditorLayout, MediaLayoutComponent } from '../types'
 import React from 'react'
-import Image from '../Image'
+import { SanityImage } from '../SanityImage'
+import { SanityImageObject } from '@sanity/image-url/lib/types/types'
 
-interface LayoutProps {
+interface FormData {
   /**
    * In minutes
    */
   duration: number
   coverTitle: string
   episodeTitle: string
-  episodeImage: SanityImage
-  backgroundImage: SanityImage
 }
 
-const Component: React.FC<LayoutProps> = ({
-  coverTitle,
-  duration,
-  episodeTitle,
-  episodeImage,
-  backgroundImage,
+interface DocumentData {
+  episodeImage: SanityImageObject
+  backgroundImage: SanityImageObject
+}
+
+const Component: MediaLayoutComponent<FormData, DocumentData> = ({
+  formData: { coverTitle, duration, episodeTitle },
+  document: { episodeImage, backgroundImage },
 }) => (
   <div
     style={{
@@ -31,10 +32,10 @@ const Component: React.FC<LayoutProps> = ({
     }}
   >
     <div>
-      <Image image={backgroundImage} />
+      <SanityImage image={backgroundImage} />
       <h1>{coverTitle || 'Title'}</h1>
       <div>
-        <Image image={episodeImage} />
+        <SanityImage image={episodeImage} />
         <div>
           {episodeTitle && <h2>{episodeTitle}</h2>}
           {duration && <p>{duration} minutes</p>}
@@ -45,11 +46,11 @@ const Component: React.FC<LayoutProps> = ({
   </div>
 )
 
-const podcastInstagram: EditorLayout<LayoutProps> = {
+const podcastInstagram: EditorLayout<FormData, DocumentData> = {
   name: 'podcastInstagram',
   title: 'Instagram podcast',
   component: Component,
-  prepare: (document) => {
+  prepareFormData: (document) => {
     return {
       duration: document.duration,
       coverTitle: document.description,

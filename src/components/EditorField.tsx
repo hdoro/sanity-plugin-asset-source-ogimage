@@ -1,23 +1,33 @@
 import { Box, Stack, Switch, Text, TextArea, TextInput } from '@sanity/ui'
 import React from 'react'
-import { FormField } from 'sanity'
-import { LayoutData, LayoutField, LayoutFieldTypes } from '../types'
+import { FieldDefinition, FormField } from 'sanity'
 
 interface EditorFieldProps {
-  field: LayoutField
-  data: LayoutData
-  updateData: (data: LayoutData) => void
+  field: FieldDefinition
+  formData: Record<string, any>
+  updateFormData: (data: Record<string, any>) => void
   disabled: boolean
 }
 
-const UNSUPORTED_TYPES: LayoutFieldTypes[] = ['array', 'date', 'datetime', 'image', 'reference']
+const UNSUPORTED_TYPES: FieldDefinition['type'][] = [
+  'array',
+  'date',
+  'datetime',
+  'image',
+  'reference',
+]
 
-const EditorField: React.FC<EditorFieldProps> = ({ field, data = {}, updateData, disabled }) => {
-  if (!field?.type || !field.name || !updateData) {
+const EditorField: React.FC<EditorFieldProps> = ({
+  field,
+  formData = {},
+  updateFormData,
+  disabled,
+}) => {
+  if (!field?.type || !field.name || !updateFormData) {
     return null
   }
   const label = field.title || field.name
-  const value = data[field.name] || undefined
+  const value = formData[field.name] || undefined
 
   if (UNSUPORTED_TYPES.includes(field.type)) {
     return (
@@ -36,7 +46,7 @@ const EditorField: React.FC<EditorFieldProps> = ({ field, data = {}, updateData,
   }
 
   if (field.type === 'object') {
-    if (!field.fields?.length) {
+    if (!('fields' in field) || !field.fields?.length) {
       return null
     }
     // @TODO: fieldset
@@ -45,14 +55,14 @@ const EditorField: React.FC<EditorFieldProps> = ({ field, data = {}, updateData,
         {field.fields.map((fld) => (
           <EditorField
             key={fld.name}
-            updateData={(newData) =>
-              updateData({
-                ...data,
+            updateFormData={(newData) =>
+              updateFormData({
+                ...formData,
                 [field.name]: newData,
               })
             }
             field={fld}
-            data={value}
+            formData={value}
             disabled={disabled}
           />
         ))}
@@ -74,8 +84,8 @@ const EditorField: React.FC<EditorFieldProps> = ({ field, data = {}, updateData,
       newValue = Number(newValue)
     }
     e.preventDefault()
-    updateData({
-      ...data,
+    updateFormData({
+      ...formData,
       [field.name]: newValue,
     })
   }

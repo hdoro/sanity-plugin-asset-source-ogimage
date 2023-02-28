@@ -1,14 +1,15 @@
+import { SanityImageObject } from '@sanity/image-url/lib/types/types'
 import React from 'react'
-import Image from '../Image'
+import { SanityImage } from '../SanityImage'
 
 // import css from './TwitterImageLayout.module.css'
-import { SanityImage, EditorLayout } from '../types'
+import { EditorLayout, MediaLayoutComponent } from '../types'
 
 // As this plugin's repo doesn't have css modules enabled, I'm not actually implementing styles
 const css = {} as any
 
 // I uploaded these in my Sanity studio and am using them as static data. I could pull this from the API or something like that, though ;)
-const profilePic: SanityImage = {
+const profilePic: SanityImageObject = {
   _type: 'image',
   asset: {
     _type: 'reference',
@@ -16,7 +17,7 @@ const profilePic: SanityImage = {
   },
 }
 
-const svgPic: SanityImage = {
+const svgPic: SanityImageObject = {
   _type: 'image',
   asset: {
     _type: 'reference',
@@ -24,16 +25,16 @@ const svgPic: SanityImage = {
   },
 }
 
-const Component = ({ title }: any) => {
+const Component: MediaLayoutComponent<{ title: string }> = ({ formData: { title } }) => {
   return (
     <div className={css.root}>
       <h1 className={css.title}>{title || 'Title missing'}</h1>
       <div className={css.author}>
-        <Image image={profilePic} width={80} />
+        <SanityImage image={profilePic} width={80} />
         Henrique Doro
       </div>
       <div className={css.svg}>
-        <Image image={svgPic} width={80} />
+        <SanityImage image={svgPic} width={80} />
       </div>
     </div>
   )
@@ -45,9 +46,9 @@ const hdoroDevOgImage: EditorLayout<{
   name: 'hdoroDevOgImage',
   title: 'Hdoro.dev',
   component: Component,
-  prepare: (document) => {
+  prepareFormData: (document) => {
     return {
-      title: document.title || document.seoTitle,
+      title: (document.title || document.seoTitle || '') as string,
     }
   },
   fields: [

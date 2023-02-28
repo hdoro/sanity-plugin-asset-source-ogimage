@@ -27,8 +27,8 @@ const LayoutsPicker: React.FC<LayoutsPickerProps> = (props) => {
         {props.layouts.map((layout, i) => (
           <Button
             key={layout.name || layout.title || `${i}-layout`}
-            mode={props.activeLayout.name === layout.name ? 'default' : 'ghost'}
-            tone={props.activeLayout.name === layout.name ? 'positive' : 'default'}
+            mode={props.activeLayout?.name === layout.name ? 'default' : 'ghost'}
+            tone={props.activeLayout?.name === layout.name ? 'positive' : 'default'}
             text={layout.title || layout.name}
             onClick={() => props.setActiveLayout(layout)}
             disabled={props.disabled}
