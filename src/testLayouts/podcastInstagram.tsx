@@ -15,6 +15,7 @@ interface FormData {
 interface DocumentData {
   episodeImage: SanityImageObject
   backgroundImage: SanityImageObject
+  [key: string]: any
 }
 
 const Component: MediaLayoutComponent<FormData, DocumentData> = ({

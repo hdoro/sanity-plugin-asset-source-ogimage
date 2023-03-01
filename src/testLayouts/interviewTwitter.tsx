@@ -11,6 +11,13 @@ interface FormData {
 
 interface DocumentData {
   intervieweePhoto?: SanityImageObject
+  author?: {
+    name: string
+    photo: SanityImageObject
+  }
+  mainQuote?: string
+  title?: string
+  seoTitle?: string
 }
 
 const Component: MediaLayoutComponent<FormData, DocumentData> = ({

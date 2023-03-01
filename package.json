@@ -1,6 +1,6 @@
 {
   "name": "sanity-plugin-asset-source-ogimage",
-  "version": "2.0.0-0",
+  "version": "2.0.0-1",
   "description": "Allow editors to generate social sharing images on the fly inside of Sanity.",
   "keywords": [
     "sanity",
@@ -23,48 +23,46 @@
   "type": "commonjs",
   "exports": {
     ".": {
-      "types": "./lib/src/index.d.ts",
+      "types": "./dist/src/index.d.ts",
       "source": "./src/index.ts",
-      "import": "./lib/index.esm.js",
-      "require": "./lib/index.js",
-      "default": "./lib/index.esm.js"
+      "require": "./dist/index.js",
+      "import": "./dist/index.esm.js",
+      "default": "./dist/index.esm.js"
     },
     "./package.json": "./package.json"
   },
-  "main": "./lib/index.js",
-  "module": "./lib/index.esm.js",
+  "main": "./dist/index.js",
+  "module": "./dist/index.esm.js",
   "source": "./src/index.ts",
-  "types": "./lib/src/index.d.ts",
+  "types": "./dist/src/index.d.ts",
   "files": [
     "src",
-    "lib",
-    "v2-incompatible.js",
-    "sanity.json"
+    "sanity.json",
+    "dist",
+    "v2-incompatible.js"
   ],
   "scripts": {
-    "prebuild": "npm run clean && plugin-kit verify-package --silent && pkg-utils",
-    "build": "pkg-utils build",
+    "build": "run-s clean && plugin-kit verify-package --silent && pkg-utils build --strict && pkg-utils --strict",
     "clean": "rimraf lib",
+    "format": "prettier --write --cache --ignore-unknown .",
     "link-watch": "plugin-kit link-watch",
     "lint": "eslint .",
-    "prepublishOnly": "npm run build",
-    "prepublish": "npm run build",
-    "watch": "pkg-utils watch"
+    "prepublishOnly": "run-s build",
+    "watch": "pkg-utils watch --strict"
   },
   "dependencies": {
-    "@sanity/icons": "^2.2.0",
-    "@sanity/image-url": "^1.0.1",
     "@sanity/incompatible-plugin": "^1.0.4",
-    "@sanity/mutator": "^3.5.1",
-    "@sanity/ui": "^1.0.0",
     "downloadjs": "^1.4.7",
     "html-to-image": "^1.11.11",
-    "is-hotkey": "^0.2.0",
-    "styled-components": "^5.3.6"
+    "is-hotkey": "^0.2.0"
   },
   "devDependencies": {
-    "@sanity/pkg-utils": "^2.0.3",
-    "@sanity/plugin-kit": "^2.2.0",
+    "@sanity/icons": "^2.2.0",
+    "@sanity/image-url": "^1.0.1",
+    "@sanity/mutator": "^3.5.1",
+    "@sanity/pkg-utils": "^2.2.6",
+    "@sanity/plugin-kit": "^3.1.7",
+    "@sanity/ui": "^1.0.0",
     "@types/downloadjs": "^1.4.3",
     "@types/is-hotkey": "^0.1.7",
     "@types/react": "^18",
@@ -78,17 +76,23 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.31.11",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "npm-run-all": "^4.1.5",
     "prettier": "^2.8.1",
     "prettier-plugin-packagejson": "^2.3.0",
     "react": "^18",
-    "rimraf": "^3.0.2",
-    "sanity": "^3.0.0",
-    "typescript": "^4.9.4"
+    "rimraf": "^4.1.2",
+    "sanity": "^3.5.1",
+    "styled-components": "^5.3.6",
+    "typescript": "^4.9.5"
   },
   "peerDependencies": {
+    "@sanity/icons": "^2",
+    "@sanity/image-url": "^1",
+    "@sanity/mutator": "^3",
+    "@sanity/ui": "^1",
     "react": "^18",
     "react-dom": "^18",
-    "sanity": "^3.0.0"
+    "sanity": "^3"
   },
   "engines": {
     "node": ">=14"

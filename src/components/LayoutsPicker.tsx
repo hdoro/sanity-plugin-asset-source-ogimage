@@ -1,5 +1,5 @@
 import { Box, Button, Inline, Text } from '@sanity/ui'
-import * as React from 'react'
+import { useCallback } from 'react'
 import { EditorLayout } from '../types'
 
 interface LayoutsPickerProps {
@@ -9,15 +9,22 @@ interface LayoutsPickerProps {
   setActiveLayout?: (layout: EditorLayout) => void
 }
 
-const LayoutsPicker: React.FC<LayoutsPickerProps> = (props) => {
+const LayoutsPicker = (props: LayoutsPickerProps) => {
+  const { setActiveLayout } = props
+  const handleClick = useCallback(
+    (layout: EditorLayout) => () => setActiveLayout?.(layout),
+    [setActiveLayout],
+  )
+
   if (
     !props.layouts?.length ||
     props.layouts.length < 2 ||
     !props.activeLayout ||
-    !props.setActiveLayout
+    !setActiveLayout
   ) {
     return null
   }
+
   return (
     <>
       <Box>
@@ -30,7 +37,7 @@ const LayoutsPicker: React.FC<LayoutsPickerProps> = (props) => {
             mode={props.activeLayout?.name === layout.name ? 'default' : 'ghost'}
             tone={props.activeLayout?.name === layout.name ? 'positive' : 'default'}
             text={layout.title || layout.name}
-            onClick={() => props.setActiveLayout(layout)}
+            onClick={handleClick(layout)}
             disabled={props.disabled}
           />
         ))}
