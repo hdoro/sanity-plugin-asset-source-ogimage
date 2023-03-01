@@ -15,6 +15,8 @@ export const SanityImage = (props: { image?: SanityImageObject; width?: number }
   const src = builder
     .image(props.image)
     .width(props.width || 500)
+    // html-to-image limitation: it can't render SVG images (unsure about other formats)
+    .format('png')
     .url()
 
   if (!src) {

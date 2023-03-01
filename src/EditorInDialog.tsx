@@ -1,6 +1,7 @@
-import { Box, Portal, studioTheme, ThemeProvider, useGlobalKeyDown } from '@sanity/ui'
+import { Box, studioTheme, ThemeProvider, useGlobalKeyDown } from '@sanity/ui'
 import isHotkey from 'is-hotkey'
 import React from 'react'
+import { createPortal } from 'react-dom'
 import Editor from './components/Editor'
 import { EditorLayout, EditorProps } from './types'
 
@@ -39,7 +40,8 @@ export const EditorInDialog = (props: EditorProps) => {
           <Editor {...props} />
         </Box>
       ) : (
-        <Portal>
+        // Use a portal to render outside the document pane
+        createPortal(
           <Box
             style={{
               position: 'fixed',
@@ -52,8 +54,9 @@ export const EditorInDialog = (props: EditorProps) => {
             }}
           >
             <Editor {...props} />
-          </Box>
-        </Portal>
+          </Box>,
+          document.body,
+        )
       )}
     </ThemeProvider>
   )

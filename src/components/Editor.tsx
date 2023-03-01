@@ -1,6 +1,6 @@
 import { CloseIcon, GenerateIcon } from '@sanity/icons'
 import { Button, Card, Flex, Inline, Spinner, Stack, Text } from '@sanity/ui'
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
   createPatchChannel,
   FormBuilder,
@@ -20,6 +20,8 @@ const DEFAULT_DIMENSIONS = {
 }
 
 const Editor = (props: EditorProps) => {
+  const containerRef = useRef<HTMLDivElement>(null)
+  const [containerRect, setContainerRect] = useState(containerRef?.current?.getBoundingClientRect())
   const {
     activeLayout,
     setActiveLayout,
@@ -33,12 +35,25 @@ const Editor = (props: EditorProps) => {
   const document = useFormValue([]) as SanityDocument
   const schemaType: Parameters<typeof useFormState>[0] = {
     fields: fields as any,
-    name: `media-editor--${activeLayout.name}`,
+    name: `object`,
     jsonType: 'object',
     // eslint-disable-next-line
     __experimental_search: [],
   }
   const [value, setValue] = useState()
+
+  useEffect(() => {
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        setContainerRect(entry.target?.getBoundingClientRect())
+      }
+    })
+    if (containerRef?.current) observer.observe(containerRef?.current)
+
+    return () => {
+      observer.disconnect()
+    }
+  }, [containerRef])
 
   const onChange = useCallback((changeEvent: PatchEvent) => {
     console.log(changeEvent)
@@ -117,9 +132,8 @@ const Editor = (props: EditorProps) => {
       <Flex
         justify="flex-start"
         align="flex-start"
-        wrap="wrap"
-        overflow="auto"
-        style={{ width: '100%', height: 'auto', minHeight: '0' }}
+        height="fill"
+        width="100%"
         sizing="border"
         padding={3}
       >
@@ -128,9 +142,11 @@ const Editor = (props: EditorProps) => {
           marginRight={4}
           style={{ maxWidth: '350px', flex: '1 0 200px' }}
           sizing="border"
+          overflow="auto"
         >
           <Stack space={4}>
-            {/* <FormBuilder
+            <p>Form!</p>
+            <FormBuilder
               __internal_patchChannel={patchChannel}
               collapsedFieldSets={undefined}
               collapsedPaths={undefined}
@@ -165,20 +181,19 @@ const Editor = (props: EditorProps) => {
               // onSetPathCollapsed={onSetCollapsedPath}
               // validation={validation}
               // value={formState.value}
-            /> */}
+            />
           </Stack>
         </Card>
         <Card
           height="fill"
-          overflow="auto"
+          overflow="hidden"
           style={{
             padding: '20px 10px',
             maxWidth: `${width + 10 * 2}px`,
           }}
-          shadow={3}
           sizing="border"
         >
-          <Stack space={3}>
+          <Flex gap={3} direction="column">
             <LayoutsPicker
               layouts={props.layouts}
               activeLayout={activeLayout}
@@ -186,17 +201,34 @@ const Editor = (props: EditorProps) => {
               setActiveLayout={setActiveLayout}
             />
 
-            <div
-              style={{
-                width: `${width}px`,
-                height: `${height}px`,
-                boxSizing: 'border-box',
-              }}
-              ref={captureRef}
-            >
-              {LayoutComponent && <LayoutComponent document={document} formData={formData} />}
+            <div style={{ flex: 1, overflow: 'hidden' }} ref={containerRef}>
+              <Card
+                style={{
+                  width: `${width}px`,
+                  height: `${height}px`,
+                  transformOrigin: 'top left',
+                  transform: getScaleFitTransform(containerRect, width, height),
+                }}
+                border
+                sizing="border"
+                overflow="hidden"
+              >
+                <div
+                  ref={captureRef}
+                  style={{
+                    width: `${width}px`,
+                    height: `${height}px`,
+                    boxSizing: 'border-box',
+                    overflow: 'hidden',
+                    // Hack to display the full border of the parent card
+                    transform: 'scale(0.99)',
+                  }}
+                >
+                  {LayoutComponent && <LayoutComponent document={document} formData={formData} />}
+                </div>
+              </Card>
             </div>
-          </Stack>
+          </Flex>
         </Card>
       </Flex>
     </Card>
@@ -204,3 +236,22 @@ const Editor = (props: EditorProps) => {
 }
 
 export default Editor
+
+/**
+ * Returns a CSS transform that fits the given width and height into the given container
+ */
+function getScaleFitTransform(
+  containerRect: DOMRect | undefined,
+  width: number,
+  height: number,
+): string | undefined {
+  if (!containerRect) return undefined
+
+  const scaleX = containerRect.width / width
+  const scaleY = containerRect.height / height
+  const scale = Math.min(scaleX, scaleY)
+
+  if (scale > 1) return undefined
+
+  return `scale(${scale})`
+}

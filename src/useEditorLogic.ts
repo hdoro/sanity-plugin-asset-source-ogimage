@@ -10,11 +10,11 @@ function useEditorLogic(props: EditorProps): {
   setActiveLayout: (newLayout: EditorLayout) => void
   disabled: boolean
   generateImage: (e: React.FormEvent) => void
-  captureRef: React.MutableRefObject<HTMLDivElement | undefined>
+  captureRef: React.RefObject<HTMLDivElement>
   formData: GenericLayoutData
   setFormData: (newData: GenericLayoutData) => void
 } {
-  const captureRef = React.useRef<HTMLDivElement>()
+  const captureRef = React.useRef<HTMLDivElement>(null)
 
   const [status, setStatus] = React.useState<'idle' | 'error' | 'loading' | 'success'>('idle')
   const disabled = status === 'loading'
