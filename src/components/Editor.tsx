@@ -1,15 +1,7 @@
 import { CloseIcon, GenerateIcon } from '@sanity/icons'
-import { Button, Card, Flex, Inline, Spinner, Stack, Text } from '@sanity/ui'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import {
-  createPatchChannel,
-  FormBuilder,
-  PatchEvent,
-  SanityDocument,
-  useDocumentPresence,
-  useFormState,
-  useFormValue,
-} from 'sanity'
+import { Button, Card, Flex, Inline, Layer, Spinner, Stack, Text } from '@sanity/ui'
+import { useEffect, useRef, useState } from 'react'
+import { FormBuilder } from 'sanity'
 import { EditorProps } from '../types'
 import useEditorLogic from '../useEditorLogic'
 import LayoutsPicker from './LayoutsPicker'
@@ -29,18 +21,8 @@ const Editor = (props: EditorProps) => {
     disabled,
     captureRef,
     formData,
-    setFormData,
+    formBuilderProps,
   } = useEditorLogic(props)
-  const fields = activeLayout.fields || []
-  const document = useFormValue([]) as SanityDocument
-  const schemaType: Parameters<typeof useFormState>[0] = {
-    fields: fields as any,
-    name: `object`,
-    jsonType: 'object',
-    // eslint-disable-next-line
-    __experimental_search: [],
-  }
-  const [value, setValue] = useState()
 
   useEffect(() => {
     const observer = new ResizeObserver((entries) => {
@@ -54,36 +36,6 @@ const Editor = (props: EditorProps) => {
       observer.disconnect()
     }
   }, [containerRef])
-
-  const onChange = useCallback((changeEvent: PatchEvent) => {
-    console.log(changeEvent)
-  }, [])
-  // const state = useFormState(schemaType, {
-
-  // })
-  // state.
-  // const formBuilderContext = useFormBuilder()
-  // formBuilderContext.
-
-  // const {
-  //   // validation,
-  //   formState,
-  //   // collapsedFieldSets,
-  //   // collapsedPaths,
-  //   // onChange,
-  //   // editState,
-  //   // documentId,
-  //   // documentType,
-  //   // ready,
-  //   // onFocus,
-  //   // onBlur,
-  //   // onSetCollapsedPath,
-  //   // onPathOpen,
-  //   // onSetCollapsedFieldSet,
-  //   // onSetActiveFieldGroup,
-  // } = useDocumentPane()
-  const presence = useDocumentPresence(document?._id || '')
-  const patchChannel = useMemo(() => createPatchChannel(), [])
   const LayoutComponent = activeLayout.component
 
   const width = activeLayout.dimensions?.width || DEFAULT_DIMENSIONS.width
@@ -131,65 +83,38 @@ const Editor = (props: EditorProps) => {
       </Card>
       <Flex
         justify="flex-start"
-        align="flex-start"
+        align="stretch"
         height="fill"
         width="100%"
         sizing="border"
         padding={3}
       >
-        <Card
-          padding={3}
-          marginRight={4}
-          style={{ maxWidth: '350px', flex: '1 0 200px' }}
-          sizing="border"
-          overflow="auto"
-        >
-          <Stack space={4}>
-            <p>Form!</p>
-            <FormBuilder
-              __internal_patchChannel={patchChannel}
-              collapsedFieldSets={undefined}
-              collapsedPaths={undefined}
-              focusPath={[]}
-              changed
-              focused
-              id="media-editor"
-              presence={presence}
-              schemaType={schemaType}
-              onChange={onChange}
-              value={value}
-              onFieldGroupSelect={console.info}
-              onPathBlur={console.info}
-              onPathFocus={console.info}
-              onPathOpen={console.info}
-              onSetFieldSetCollapsed={console.info}
-              onSetPathCollapsed={console.info}
-              groups={[]}
-              members={[]}
-              validation={[]}
-              // focusPath={formState.focusPath}
-              // groups={formState.groups}
-              // members={formState.members}
-              // collapsedFieldSets={collapsedFieldSets}
-              // collapsedPaths={collapsedPaths}
-              // onChange={onChange}
-              // onFieldGroupSelect={onSetActiveFieldGroup}
-              // onPathBlur={onBlur}
-              // onPathFocus={onFocus}
-              // onPathOpen={onPathOpen}
-              // onSetFieldSetCollapsed={onSetCollapsedFieldSet}
-              // onSetPathCollapsed={onSetCollapsedPath}
-              // validation={validation}
-              // value={formState.value}
-            />
-          </Stack>
-        </Card>
+        {formBuilderProps && (
+          <Card
+            paddingLeft={2}
+            paddingTop={2}
+            paddingRight={4}
+            paddingBottom={4}
+            marginRight={3}
+            style={{ maxWidth: '370px', flex: '1 0 200px' }}
+            sizing="border"
+            overflow="auto"
+            height="fill"
+          >
+            <Stack space={4}>
+              <Layer zOffset={10000}>
+                <FormBuilder {...formBuilderProps} />
+              </Layer>
+            </Stack>
+          </Card>
+        )}
         <Card
           height="fill"
           overflow="hidden"
           style={{
             padding: '20px 10px',
             maxWidth: `${width + 10 * 2}px`,
+            flex: 2,
           }}
           sizing="border"
         >
@@ -224,7 +149,9 @@ const Editor = (props: EditorProps) => {
                     transform: 'scale(0.99)',
                   }}
                 >
-                  {LayoutComponent && <LayoutComponent document={document} formData={formData} />}
+                  {LayoutComponent && (
+                    <LayoutComponent document={props.document} formData={formData} />
+                  )}
                 </div>
               </Card>
             </div>

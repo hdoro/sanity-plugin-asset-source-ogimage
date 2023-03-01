@@ -55,6 +55,7 @@
     "@sanity/icons": "^2.2.0",
     "@sanity/image-url": "^1.0.1",
     "@sanity/incompatible-plugin": "^1.0.4",
+    "@sanity/mutator": "^3.5.1",
     "@sanity/ui": "^1.0.0",
     "downloadjs": "^1.4.7",
     "html-to-image": "^1.11.11",
