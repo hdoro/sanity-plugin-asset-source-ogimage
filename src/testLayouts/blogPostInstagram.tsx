@@ -1,6 +1,6 @@
 import { SanityImageObject } from '@sanity/image-url/lib/types/types'
 import React from 'react'
-import { SanityImage } from '../SanityImage'
+import { SanityImage } from '../components/SanityImage'
 import { EditorLayout } from '../types'
 
 const blogPostInstagram: EditorLayout<

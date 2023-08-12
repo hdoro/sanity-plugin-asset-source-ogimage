@@ -1,7 +1,7 @@
 import { SanityImageObject } from '@sanity/image-url/lib/types/types'
 import React from 'react'
 import styled from 'styled-components'
-import { SanityImage } from '../SanityImage'
+import { SanityImage } from '../components/SanityImage'
 import { EditorLayout, MediaLayoutComponent } from '../types'
 
 interface FormData {

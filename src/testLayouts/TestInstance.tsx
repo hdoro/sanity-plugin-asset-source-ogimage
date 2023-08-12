@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { EditorInDialog } from '../EditorInDialog'
+import { FormPortal } from '../components/FormPortal'
 import blogPostInstagram from './blogPostInstagram'
 import { HdoroOgImage } from './hdoroDevOgImage'
 import interviewTwitter from './interviewTwitter'
@@ -8,7 +8,7 @@ import podcastInstagram from './podcastInstagram'
 
 const ComponentName = (props: any) => {
   return (
-    <EditorInDialog
+    <FormPortal
       {...props}
       layouts={[podcastInstagram, interviewTwitter, HdoroOgImage, blogPostInstagram]}
     />
