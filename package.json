@@ -20,21 +20,24 @@
   },
   "license": "Apache-2.0",
   "author": "Henrique Doro <opensource@hdoro.dev>",
-  "type": "commonjs",
+  "type": "module",
   "exports": {
     ".": {
-      "types": "./dist/src/index.d.ts",
+      "types": "./dist/index.d.ts",
       "source": "./src/index.ts",
-      "require": "./dist/index.js",
-      "import": "./dist/index.esm.js",
-      "default": "./dist/index.esm.js"
+      "require": "./dist/index.cjs",
+      "node": {
+        "import": "./dist/index.cjs.js"
+      },
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
     },
     "./package.json": "./package.json"
   },
-  "main": "./dist/index.js",
-  "module": "./dist/index.esm.js",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
   "source": "./src/index.ts",
-  "types": "./dist/src/index.d.ts",
+  "types": "./dist/index.d.ts",
   "files": [
     "src",
     "sanity.json",
@@ -43,7 +46,7 @@
   ],
   "scripts": {
     "build": "run-s clean && plugin-kit verify-package --silent && pkg-utils build --strict && pkg-utils --strict",
-    "clean": "rimraf lib",
+    "clean": "rimraf dist",
     "format": "prettier --write --cache --ignore-unknown .",
     "link-watch": "plugin-kit link-watch",
     "lint": "eslint .",
@@ -54,7 +57,8 @@
     "@sanity/incompatible-plugin": "^1.0.4",
     "downloadjs": "^1.4.7",
     "html-to-image": "^1.11.11",
-    "is-hotkey": "^0.2.0"
+    "is-hotkey": "^0.2.0",
+    "sanity-plugin-asset-source-ogimage": "link:.yalc/sanity-plugin-asset-source-ogimage"
   },
   "devDependencies": {
     "@sanity/icons": "^2.2.0",
