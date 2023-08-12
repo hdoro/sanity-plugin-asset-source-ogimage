@@ -1,5 +1,5 @@
 import { Box, Button, Inline, Text } from '@sanity/ui'
-import { useCallback } from 'react'
+import React from 'react'
 import { EditorLayout } from '../types'
 
 interface LayoutsPickerProps {
@@ -11,7 +11,7 @@ interface LayoutsPickerProps {
 
 const LayoutsPicker = (props: LayoutsPickerProps) => {
   const { setActiveLayout } = props
-  const handleClick = useCallback(
+  const handleClick = React.useCallback(
     (layout: EditorLayout) => () => setActiveLayout?.(layout),
     [setActiveLayout],
   )
