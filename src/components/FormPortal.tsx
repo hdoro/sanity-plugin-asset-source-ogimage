@@ -1,6 +1,6 @@
-import { Box, Portal, PortalProvider, studioTheme, ThemeProvider, useLayer } from '@sanity/ui'
+// eslint-disable-next-line no-unused-vars
 import React, { SyntheticEvent } from 'react'
-import { SanityDocument, useFormValue } from 'sanity'
+import { Box, Portal, PortalProvider, studioTheme, ThemeProvider, useLayer } from '@sanity/ui'
 import useKeyPress from '../hooks/useKeyPress'
 import useRootPortalElement from '../hooks/useRootPortalElement'
 import { EditorLayout, EditorProps } from '../types'
@@ -10,9 +10,6 @@ export const FormPortal = (props: EditorProps) => {
   const { onClose } = props
 
   const portalElement = useRootPortalElement()
-
-  // Get current Sanity document
-  const currentDocument = useFormValue([]) as SanityDocument
 
   useKeyPress('escape', onClose)
 
@@ -54,7 +51,7 @@ export const FormPortal = (props: EditorProps) => {
               zIndex,
             }}
           >
-            <Editor {...props} document={currentDocument} />
+            <Editor {...props} />
           </Box>
         </Portal>
       </ThemeProvider>
