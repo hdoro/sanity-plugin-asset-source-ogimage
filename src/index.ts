@@ -4,7 +4,7 @@ import { BuildEditorAssetSource } from './BuildEditorAssetSource'
 import { EditorConfiguration } from './types'
 
 const plugin = {
-  title: 'Open Graph Image',
+  title: 'Generate OG Image',
   name: 'opengraph',
   icon: ImageIcon,
 }
@@ -19,7 +19,7 @@ export const opengraph = definePlugin<EditorConfiguration>((options) => ({
   form: {
     image: {
       assetSources: (prev) => {
-        return [...prev, mediaAssetSource(options)]
+        return [...prev, mediaAssetSource({ ...options, context: 'asset-source' })]
       },
     },
   },
