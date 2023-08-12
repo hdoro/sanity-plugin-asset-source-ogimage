@@ -67,11 +67,11 @@ export type EditorLayout<FormData = {}, DocumentData = {}> = {
 export interface EditorConfiguration {
   layouts?: EditorLayout[]
   dialog?: DialogLabels
+  context?: 'tool' | 'asset-source'
 }
 
 export type EditorProps = {
   // The props below are provided by Sanity
-  context?: 'tool' | 'asset-source'
   document: SanityDocument
 } & EditorConfiguration &
   Partial<AssetSourceComponentProps>

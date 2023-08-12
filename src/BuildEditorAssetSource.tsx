@@ -24,6 +24,6 @@ export function BuildEditorAssetSource(config: EditorConfiguration): AssetSource
       throw new Error('[media-editor] This asset source only supports single selection')
     }
 
-    return <FormPortal {...props} {...config} context="asset-source" document={document} />
+    return <FormPortal {...props} {...config} document={document} />
   }
 }
