@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React from 'react'
 import imageUrlBuilder from '@sanity/image-url'
 import { useDataset, useProjectId } from 'sanity'
 import { SanityImageObject } from '@sanity/image-url/lib/types/types'

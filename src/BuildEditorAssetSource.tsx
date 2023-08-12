@@ -1,5 +1,5 @@
 import { AssetSource, SanityDocument, useFormValue } from 'sanity'
-import { EditorInDialog } from './EditorInDialog'
+import { FormPortal } from './components/FormPortal'
 import { EditorConfiguration } from './types'
 
 export function BuildEditorAssetSource(config: EditorConfiguration): AssetSource['component'] {
@@ -24,6 +24,6 @@ export function BuildEditorAssetSource(config: EditorConfiguration): AssetSource
       throw new Error('[media-editor] This asset source only supports single selection')
     }
 
-    return <EditorInDialog {...props} {...config} context="asset-source" document={document} />
+    return <FormPortal {...props} {...config} context="asset-source" document={document} />
   }
 }

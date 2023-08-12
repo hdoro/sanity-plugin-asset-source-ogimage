@@ -15,7 +15,7 @@ import {
   useFormState,
   useSchema,
 } from 'sanity'
-import { EditorLayout, EditorProps } from './types'
+import { EditorLayout, EditorProps } from '../types'
 
 type GenericLayoutData = Record<string, any>
 

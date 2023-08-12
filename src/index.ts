@@ -1,4 +1,4 @@
 export * from './BuildEditorAssetSource'
-export * from './EditorInDialog'
-export * from './SanityImage'
-export * from './types'
+export * from './components/FormPortal'
+export * from './components/SanityImage'
+export type * from './types'
