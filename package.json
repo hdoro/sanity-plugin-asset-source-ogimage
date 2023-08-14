@@ -20,24 +20,20 @@
   },
   "license": "Apache-2.0",
   "author": "Henrique Doro <opensource@hdoro.dev>",
-  "type": "module",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
+      "types": "./dist/src/index.d.ts",
       "source": "./src/index.ts",
-      "require": "./dist/index.cjs",
-      "node": {
-        "import": "./dist/index.cjs.js"
-      },
-      "import": "./dist/index.js",
-      "default": "./dist/index.js"
+      "require": "./dist/index.js",
+      "import": "./dist/index.esm.js",
+      "default": "./dist/index.esm.js"
     },
     "./package.json": "./package.json"
   },
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
+  "main": "./dist/index.js",
+  "module": "./dist/index.esm.js",
   "source": "./src/index.ts",
-  "types": "./dist/index.d.ts",
+  "types": "./dist/src/index.d.ts",
   "files": [
     "src",
     "sanity.json",

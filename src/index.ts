@@ -28,4 +28,4 @@ export const opengraph = definePlugin<EditorConfiguration>((options) => ({
 export * from './BuildEditorAssetSource'
 export * from './components/FormPortal'
 export * from './components/SanityImage'
-export type * from './types'
+export * from './types'
