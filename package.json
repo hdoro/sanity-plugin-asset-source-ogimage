@@ -53,8 +53,7 @@
     "@sanity/incompatible-plugin": "^1.0.4",
     "downloadjs": "^1.4.7",
     "html-to-image": "^1.11.11",
-    "is-hotkey": "^0.2.0",
-    "sanity-plugin-asset-source-ogimage": "link:.yalc/sanity-plugin-asset-source-ogimage"
+    "is-hotkey": "^0.2.0"
   },
   "devDependencies": {
     "@sanity/icons": "^2.2.0",
