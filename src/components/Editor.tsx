@@ -3,9 +3,9 @@ import React from 'react'
 import { Card, Flex } from '@sanity/ui'
 import useEditorLogic from '../hooks/useEditorLogic'
 import { EditorProps } from '../types'
-import FormControls from './FormControls'
-import ImageViewer from './ImageViewer'
+import EditorPanel from './EditorPanel'
 import PortalHead from './PortalHead'
+import PreviewPanel from './PreviewPanel'
 
 const Editor = (props: EditorProps) => {
   const { document, dialog, onClose, ...restProps } = props
@@ -29,11 +29,8 @@ const Editor = (props: EditorProps) => {
           sizing="border"
           padding={3}
         >
-          {/* Form Controls */}
-          {formBuilderProps && <FormControls {...formBuilderProps} />}
-
-          {/* Image Viewer  */}
-          <ImageViewer {...logic} {...restProps} document={document} disabled={disabled} />
+          {formBuilderProps && <EditorPanel {...formBuilderProps} />}
+          <PreviewPanel {...logic} {...restProps} document={document} disabled={disabled} />
         </Flex>
       </Flex>
     </Card>

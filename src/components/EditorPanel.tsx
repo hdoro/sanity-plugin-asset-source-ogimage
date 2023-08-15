@@ -3,7 +3,7 @@ import React from 'react'
 import { Card, Stack, Layer } from '@sanity/ui'
 import { FormBuilder, FormBuilderProps } from 'sanity'
 
-const FormControls = (props: FormBuilderProps) => (
+const EditorPanel = (props: FormBuilderProps) => (
   <Card
     paddingLeft={2}
     paddingTop={2}
@@ -23,4 +23,4 @@ const FormControls = (props: FormBuilderProps) => (
   </Card>
 )
 
-export default FormControls
+export default EditorPanel
