@@ -1,3 +1,5 @@
+⚠️ **Notice:** I no longer mantain this repository. I won't reply to requests, bug reports or PRs. Feel free to fork and deploy your own version, you have my blessing.
+
 # Sanity Asset Source Plugin: og:image generation
 
 Allow editors to easily create sharing images customized to their branding and show a preview of how the content will look on social media.
